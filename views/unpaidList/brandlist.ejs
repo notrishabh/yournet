@@ -90,13 +90,12 @@
                         <a href="/adminPanel/unpaidList/all" class="btn btn-primary"><i class="fas fa-book-open"></i></a>
                       </td>
                       <td>
-                        <a href="/adminPanel/unpaidList/" class="btn btn-primary"><i class="fas fa-arrow-circle-down"></i></a>
+                        <a href="/adminPanel/unpaidList/all/download" class="btn btn-primary"><i class="fas fa-arrow-circle-down"></i></a>
                       </td>
                     </tr>
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
                         %>
-
                         <tr>
                           <td><%= results[i].id %></td>
                           <td><%= results[i].brand_name %></td>

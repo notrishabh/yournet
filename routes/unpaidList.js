@@ -25,6 +25,59 @@ route.get("/",ensureAuthenticateds,(req,res)=>{
 
 });
 
+route.get('/all/download', ensureAuthenticateds,(req,res)=>{
+  var d = new Date();
+  var month = new Array();
+  month[0] = "January";
+  month[1] = "February";
+  month[2] = "March";
+  month[3] = "April";
+  month[4] = "May";
+  month[5] = "June";
+  month[6] = "July";
+  month[7] = "August";
+  month[8] = "September";
+  month[9] = "October";
+  month[10] = "November";
+  month[11] = "December";
+
+  var monthName = month[d.getMonth()];
+
+
+  const workbook = new Excel.Workbook();
+  const worksheet = workbook.addWorksheet('records');
+  worksheet.views = [
+      {state: 'frozen', ySplit: 1, activeCell: 'A1'}
+  ];
+  worksheet.columns = [
+      { header: 'Name', key: 'Name', width: 32 },
+      { header: 'Address', key: 'Address', width: 30 },
+      { header: 'Stb', key: 'Stb', width: 15},
+      { header: 'Mobile', key: 'Mobile', width: 15 },
+      { header: 'Amount', key: 'Amount', width: 10 },
+  ];
+  let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE suspended = 0 AND status = 0`;
+  db.query(sql, (err,results)=>{
+      results.forEach((result)=>{
+          var data = JSON.parse(JSON.stringify(result));
+          worksheet.addRow(data);
+      });
+      sendWorkbookAll(workbook,res);
+  })
+});
+
+
+async function sendWorkbookAll(workbook, response) { 
+
+      var fileName = `AllUnpaid.xlsx`;
+      response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+  
+       await workbook.xlsx.write(response);
+  
+      response.end();
+}
+
 route.get('/:brand/download', ensureAuthenticateds,(req,res)=>{
   var brand = req.params.brand;
 
