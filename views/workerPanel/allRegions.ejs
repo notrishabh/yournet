@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Unpaid List (<%=results[0].region_name%>)</title>
+    <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+
+    
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+    <link rel="stylesheet" href="/main.css">
+
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script>
+      function fields(){
+        document.getElementById('customField').disabled = false;
+      }
+    </script>
+
+</head>
+ 
+ <body id="page-top">
+   <div id="wrapper">
+          <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+              <%- include('../partials/workerTopbar', {heading: `Unpaid List (${results[0].region_name})`}); %>
+
+              <!-- End of Topbar -->
+      
+              <!-- Begin Page Content -->
+              <div class="container-fluid">
+                <% include ../partials/messages %>
+                <p class="lead" style="color: red;"><%=success%></p>
+
+                <div class="container-fluid">
+                  <div class="row align-items-center">
+                    <div class="col-md-4">
+                      <div class="row align-items-center">
+                        <a href="/workerPanel/unpaidList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+                      </div>
+                    </div>
+                  </div>
+
+
+                <div class="container-fluid mb-4" id="payForm" style="display: none;">
+                  <div class="card shadow">
+                      <h5 class="card-header">Payment Entry Form</h5>
+                      <div class="card-body">
+    
+                        <form action="/workerPanel/unpaidList/<%=region_id%>/pay" method="POST">
+                          <input type="hidden" name='Stb' id='Stb'>
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="153" required>
+                            <label class="form-check-label" for="exampleRadios1">
+                              Basic Pack <i class="fas fa-rupee-sign"></i> 153
+                            </label>
+                          </div>
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="275">
+                            <label class="form-check-label" for="exampleRadios2">
+                              Silver Pack <i class="fas fa-rupee-sign"></i> 275
+                            </label>
+                          </div>
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="360">
+                            <label class="form-check-label" for="exampleRadios3">
+                              Gold Pack <i class="fas fa-rupee-sign"></i> 360
+                            </label>
+                          </div>
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="454">
+                            <label class="form-check-label" for="exampleRadios4">
+                              Diamond Pack <i class="fas fa-rupee-sign"></i> 454
+                            </label>
+                          </div>
+                          <div class="form-check mb-3">
+                            <div class="row align-items-center">
+                              <div class="col-4">
+                                <input type="radio" name="exampleRadios" id="customRadio" class="form-check-input" onclick=fields()>
+                                <label class="form-check-label" for="customRadio" >Custom Amount</label>
+                                <input type="text" class="ml-3" name="exampleField" id="customField"  disabled required /> 
+                              </div> 
+                                <div class="col-3">
+                                  <select class="form-control" name="duration" required>
+                                      <% for(var i=1; i<= 12 ; i++){%>
+                                        <option value="<%=i%>"><%=i%> Months</option>
+                                    <%}%>
+                                </select>                        
+                              </div>  
+                              
+                            </div>
+                          </div>
+                            <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Pay</button>
+                          </div>
+                        </form>  
+                          </div>    
+                      </div>
+                </div>
+
+
+                          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Table View</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                        <th>Pay</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile</th>
+                      <th>STB No.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if(results.length){ 
+                      for(var i = 0;i < results.length;i++) { 
+                        %>
+
+                        <tr>
+                        <td>
+                            <button class="btn btn-primary" 
+                            onclick="document.getElementById('payForm').style.display = 'block'; 
+                            document.getElementById('Stb').value = '<%=results[i].Stb%>'"
+                            ><i class="fas fa-money-bill-wave"></i></button>
+                        </td>
+                          <td><%= results[i].Name %></td>
+                          <td><%= results[i].Address %></td>
+                          <td><%= results[i].Mobile %></td>
+                          <td><%= results[i].Stb %></td>
+                        </tr>
+
+                    <% } 
+                  }else{ %>
+                    <tr>
+                      <td colspan="3">No customers found</td>
+                    </tr>
+                  <% } %>
+                    
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+      
+                
+              </div>
+            </div>
+              <%- include('../partials/footer'); %>
+            </div>
+            </div>
+          </div>
+            
+      
+
+
+          <%- include('../partials/vendor'); %>
+
+            <!-- Page level plugins -->
+            <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="/scripts/datatables.js"></script>
+            <script>
+              $('#dataTable').dataTable({
+                "ordering" : false,
+                "lengthChange": false
+              });
+            </script>
+
+
+ </body>
+ 
+ </html>

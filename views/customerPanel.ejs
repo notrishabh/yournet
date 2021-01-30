@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Welcome <%=data.Name%></title>
+                <link rel="icon" href="wicon.jpg" type="image/x-icon">
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+                
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+                <link type="text/css" rel="stylesheet" href="http://dinus.org/assets/mail/mailtip.css"/>
+                <script type="text/javascript" src="http://dinus.org/assets/mail/jquery.mailtip.js"></script>
+                <script src="https://kit.fontawesome.com/8436e174fd.js" crossorigin="anonymous"></script>
+
+
+                <style>
+                        .jumbotron{
+                                background-color: rgba(255, 0, 0, 0.658);
+                        
+                        }
+                        #name
+                        {
+                                color:rgba(248, 227, 201, 0.993);
+                        }
+                        
+                        .img-thumbnail{
+                                width: 300px;
+                        }
+                        
+                        .radiotext {
+                                  margin: 10px 10px 0px 0px;
+                            }
+                        #pay
+                        {
+                                float: right;
+                        }
+                        #navbar-right-link{
+                            font-size: 16px;
+                            color: #890505;
+                            margin-right: 50px;
+                            margin-top: 15px;
+                            padding: 12px;
+                        }
+
+                        @media only screen and (max-width: 750px) {
+                            #navbar-right-link {
+                                margin-left: 50px;
+                            }
+                        }
+                        #navbar-right-link:hover{
+                            color: #bb4747;
+                        }
+                        #userImg{
+                            width: 15vw;
+                        }
+                        @media only screen and (max-width: 1000px) {
+                            #userImg {
+                                display: none;
+                            }
+                        }
+                        #historyHead{
+                            margin-top: 5%;
+                        }
+
+                </style>
+              </head>
+    <body>
+        <% include ./partials/nav-3 %>
+        <div class = "container"><h1 class="jumbotron">Welcome <span id = "name"><%= data.Name %></span></h1>
+        
+        <div class="row">
+        <div class="col-md-6"><img src="user.svg" alt="..." id="userImg"></div>
+
+
+        <div class="col-md-6"><div class="panel-group">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" href="#collapse1">Identity Box</a>
+                    </h4>
+                  </div>
+                  <div id="collapse1" class="panel-collapse collapse">
+                    <ul class="list-group">
+                      <li class="list-group-item">Name : <%= data.Name %></li>
+                      <li class="list-group-item">Address : <%= data.Address %></li>
+                      <li class="list-group-item" id="stbbb" value = '<%= data.Stb %>'>Stb No. : <%= data.Stb %></li>
+                      <li class="list-group-item">Mobile No. : <%= data.Mobile %></li>
+                    </ul>
+                </div>
+              </div>
+              </div>
+              </div>
+              </div>
+              <h1 id="historyHead">Payment History and Balance</h1>
+              <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Month</th>
+                            <th scope="col">Paid Status</th>
+                            <th scope="col">Amount Paid</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for(var i=0; i<3; i++){ %>
+                            <tr>
+                                <th scope="row"><%=i+1%></th>
+                                <td><%= months[i] %></td>
+                                <% if(data[months[i]]) { %> 
+                                    <td class="bg-success">Paid</td>
+                                    <td class="bg-success"><i class="fas fa-rupee-sign"></i> <%=data[months[i]]%></td>
+                                <%  } 
+                                else { %>
+                                    <td class="bg-danger">Unpaid</td>
+                                    <td class="bg-danger"></td>
+                                <% } %>
+                              </tr>
+                          <%} %>
+
+                        </tbody>
+                      </table>
+                
+            <div>
+            <h1 id="historyHead">Select Package</h1>
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Package</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <form action="/customerPanel/txn" method="POST" autocomplete="off">
+                    <input type="hidden" value="<%=data.Stb%>" name="Stb">
+                    <input type="hidden" value="<%=data.Mobile%>" name="Mobile">
+                    <tr>
+                        <td>
+                            <div class="radio">
+                                <label><input type="radio" id='basic' name="group1" value="160" required><i class="fas fa-rupee-sign"></i> 160</label>
+                            </div>
+                        </td>
+                        <td>
+                        <div class="radiotext">
+                            <label for='basic'>Basic Pack</label>
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="radio">
+                                <label><input type="radio" id='silver' name="group1" value="290"><i class="fas fa-rupee-sign"></i> 290</label>
+                           </div>
+                        </td>
+                        <td>
+                            <div class="radiotext">
+                                <label for='silver'>Silver Pack</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td>
+                          <div class="radio">
+                              <label><input type="radio" id='gold' name="group1" value="380"><i class="fas fa-rupee-sign"></i> 380</label>
+                         </div>
+                      </td>
+                      <td>
+                          <div class="radiotext">
+                              <label for='gold'>Gold Pack</label>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                    <td>
+                        <div class="radio">
+                            <label><input type="radio" id='diamond' name="group1" value="450"><i class="fas fa-rupee-sign"></i> 450</label>
+                       </div>
+                    </td>
+                    <td>
+                        <div class="radiotext">
+                            <label for='diamond'>Diamond Pack</label>
+                        </div>
+                    </td>
+                </tr>
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 15px;"><i class="fas fa-shopping-cart"></i> Pay Now</button>
+                    </td>
+                    </form>
+                    </tbody>
+           </table>
+           </div>
+               
+
+             
+             <div class="row">
+              <center><h1>Send your Complaints to Us !</h1></center>
+                  <div class="col-md-4"></div>
+                  <div class="col">
+                      <div class="panel panel-default">
+                              <div class="panel-body">
+                                  <div class="col-md-12 row" style="padding:0px;margin-bottom:10px;">
+                                      
+                                      <div class="col-md-2">
+                                          <img src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif" width="100px" height="50px">
+                                          <div style="margin-left:30px;">
+                                              <img src="complaint.svg" width="70px" height="70px" >
+                                          </div>
+                                      </div>
+                                      <div class="col-md-10">
+                                          <hr>
+                                          <p style="padding-left:55px;font-size:32px;"><strong>GABA CABLE</strong></p>
+                                          
+                                      </div>
+                                      
+                                      
+                                  </div>
+          
+                                  <form action="/customerPanel/sendComplaint" method="POST">
+                                      <table class="table">
+                                            <tr>
+                                                    <td>
+                                                        <input class="form-control" type="text" name = "stb" value="<%= data.Stb %>" readonly >
+                                                    </td>
+                                            </tr>
+                                          <tr>
+                                              <td>
+                                                  <input type="email" class="form-control"  id="mailtip2" name="mail" placeholder="Your E-Mail (Optional)">
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                                <input class="form-control" type="text" name = "name" placeholder="Name">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                              <input class="form-control" type="text" name="address" placeholder="<%= data.Address %>" readonly>
+                                          </td>
+                                      </tr>
+                                          <tr>
+                                              <td>
+                                                  <input class="form-control" type="text" name="error" placeholder="No. displayed on screen" required>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <textarea class="form-control" rows="4" name= "msg" placeholder="Message text . . ."></textarea>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <button class="btn btn-danger btn-sm" type="submit" style="width: 100%;"><i class="fa fa-envelope-o" style="padding-right: 5px;"></i> Send</button>
+                                              </td>
+                                          </tr>
+                                      </table>
+          
+                                  </form>
+                              </div>
+                          </div>
+          
+                      </div>
+          
+                  </div>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-footer text-center">Copyright &copy; Wirejoin 2020</div>
+          </div>
+
+        
+    </body>
+</html>

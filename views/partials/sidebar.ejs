@@ -1,0 +1,200 @@
+<ul
+  class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+  id="accordionSidebar"
+>
+  <!-- Sidebar - Brand -->
+  <a
+    class="sidebar-brand d-flex align-items-center justify-content-center"
+    href="/adminPanel"
+  >
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-globe-americas"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">Wirejoin</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0" />
+
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item <%=dashboard%>">
+    <a class="nav-link" href="/adminPanel">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a
+    >
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
+
+  <!-- Heading -->
+  <div class="sidebar-heading">Database Records</div>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item <%=payments%>">
+    <a
+      class="nav-link collapsed"
+      href="#"
+      data-toggle="collapse"
+      data-target="#collapseTwo"
+      aria-expanded="true"
+      aria-controls="collapseTwo"
+    >
+      <i class="fas fa-money-bill-wave"></i>
+      <span>Payments</span>
+    </a>
+    <div
+      id="collapseTwo"
+      class="collapse"
+      aria-labelledby="headingTwo"
+      data-parent="#accordionSidebar"
+    >
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Time Duration :</h6>
+        <a class="collapse-item" href="/adminPanel/payments/today">Today</a>
+        <a class="collapse-item" href="/adminPanel/payments/thisMonth"
+          >This Month</a
+        >
+        <a class="collapse-item" href="/adminPanel/payments/thisYear"
+          >This Year</a
+        >
+        <a class="collapse-item" href="/adminPanel/payments/offline"
+          >Offline</a
+        >
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item <%=complaints%>">
+    <a
+      class="nav-link collapsed"
+      href="#"
+      data-toggle="collapse"
+      data-target="#collapseThree"
+      aria-expanded="true"
+      aria-controls="collapseThree"
+    >
+    <i class="fas fa-fw fa-wrench"></i>
+    <span>Complaints</span>
+    </a>
+    <div
+      id="collapseThree"
+      class="collapse"
+      aria-labelledby="headingThree"
+      data-parent="#accordionSidebar"
+    >
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/adminPanel/complaints/pending">Pending</a>
+        <a class="collapse-item" href="/adminPanel/complaints/solved"
+          >Solved</a
+        >
+      </div>
+    </div>
+  </li>
+
+
+
+  <!-- Nav Item - Utilities Collapse Menu -->
+  <!-- <li class="nav-item <%=complaints%>">
+    <a class="nav-link" href="/adminPanel/complaints/pending">
+      <i class="fas fa-fw fa-wrench"></i>
+      <span>Complaints</span></a
+    >
+  </li> -->
+
+  <li class="nav-item <%=history%>">
+    <a class="nav-link" href="/adminPanel/history">
+      <i class="fas fa-history"></i>
+      <span>History</span></a
+    >
+  </li>
+
+  <li class="nav-item <%=worker%>">
+    <a class="nav-link" href="/adminPanel/worker">
+      <i class="fas fa-user"></i>
+      <span>Workers List</span></a
+    >
+  </li>
+
+  <li class="nav-item <%=region%>">
+    <a class="nav-link" href="/adminPanel/region">
+      <i class="fas fa-map-marker-alt"></i>
+      <span>Regions List</span></a
+    >
+  </li>
+  <li class="nav-item <%=brand%>">
+    <a class="nav-link" href="/adminPanel/brand">
+      <i class="fas fa-briefcase"></i>
+      <span>Brand List</span></a
+    >
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
+
+  <!-- Heading -->
+  <div class="sidebar-heading">Admin Tools</div>
+
+  <!-- Nav Item - Charts -->
+  <li class="nav-item <%=offlinePayments%>">
+    <a class="nav-link" href="/adminPanel/offlinePayments">
+      <i class="fas fa-cash-register"></i>
+      <span>Offline Payments</span></a
+    >
+  </li>
+  <li class="nav-item <%=offlineComplaints%>">
+    <a class="nav-link" href="/adminPanel/offlineComplaints">
+      <i class="fas fa-bullhorn"></i>
+      <span>Offline Complaints</span></a
+    >
+  </li>
+
+  <li class="nav-item <%=newStb%>">
+    <a class="nav-link" href="/adminPanel/newStb">
+      <i class="fas fa-plus-square"></i>
+      <span>New Connection</span></a
+    >
+  </li>
+
+  <li class="nav-item <%=fullList%>">
+    <a
+      class="nav-link collapsed"
+      href="#"
+      data-toggle="collapse"
+      data-target="#collapseFour"
+      aria-expanded="true"
+      aria-controls="collapseFour"
+    >
+    <i class="fas fa-fw fa-table"></i>
+    <span>Lists</span>
+    </a>
+    <div
+      id="collapseFour"
+      class="collapse"
+      aria-labelledby="headingFour"
+      data-parent="#accordionSidebar"
+    >
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/adminPanel/fullList">Full List</a>
+          <a class="collapse-item" href="/adminPanel/unpaidList">
+            Unpaid List</a>
+          <a class="collapse-item" href="/adminPanel/paidList">
+            Paid List</a>
+          <a class="collapse-item" href="/adminPanel/suspendedList">
+            Suspended List</a>
+          <a class="collapse-item" href="/adminPanel/balanceList">
+            Balance List</a>
+      </div>
+    </div>
+  </li>
+
+
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block" />
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+</ul>

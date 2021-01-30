@@ -1,0 +1,11 @@
+<!-- Can also be defined in ejs routing with more number of variables -->
+
+<% if(success_msg != '') { %>
+    <div class="alert alert-success"><%= success_msg %></div>
+<% } %>
+
+<% if(error_msg != '') { %>
+    <div class="alert alert-danger">
+        <%= error_msg %>
+    </div>
+<% } %>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Offline Complaints</title>
+    <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+
+    <link
+      href="/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/main.css" />
+
+    <link
+      href="/vendor/datatables/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+    />
+
+    <script>
+      function fields(){
+        document.getElementById('customField').disabled = false;
+      }
+    </script>
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <%- include('partials/sidebar', { dashboard : '', payments : '',
+      complaints : '',history : '', worker : '',region : '',brand: '', offlinePayments : '', offlineComplaints : 'active',newStb : '', unpaidList : '', fullList : '' }); %>
+
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <%- include('partials/topbar', {heading: 'Register a Complaint'}); %>
+
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <% include ./partials/messages %>
+            <p class="lead" style="color: red;"><%=success%></p>
+            
+
+            <h1 class="h4 mb-4 text-gray-800">
+              Enter the Details of the Customer
+            </h1>
+
+            <form class="form-inline" method="POST" autocomplete="off">
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="stbNumber" class="sr-only">User ID</label>
+                  <input type="text" class="form-control" id="stbNumber" name="stb" placeholder="User ID" required>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Check Details</button>
+              </form>
+              
+
+              <div style="display: <%=displayDetails%>;">
+                <div class="card shadow  mb-5 mt-3 bg-white rounded border-info">
+                  <h5 class="card-header">Customer Details</h5>
+                  <div class="card-body">
+                    <% if(results != 'none'){
+                      if(results){ %>
+                    <h5 class="card-title"> Name : <%=results.Name%></h5>
+                    <p class="card-text"> Address : <%=results.Address%></p>
+                    <p class="card-text">Mobile : <%=results.Mobile%></p>
+                    <p class="card-text">User ID : <%=results.Stb%></p>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <h5 class="card-header">Complaint Form</h5>
+                  <div class="card-body">
+
+                    <form action="/adminPanel/offlineComplaints/saveComplaint" method="POST">
+                        <input type="hidden" name='Stb'  value="<%=results.Stb%>">
+                        <div class="form-inline mb-3">
+                            <label for="errorNo" class="mr-2">Error Number</label>
+                            <input type="text" class="form-control" id="errorNo" name="error" placeholder="NA" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="msg">Message</label>
+                            <textarea class="form-control" id="msg" rows="3" name="msg"></textarea>
+                          </div>
+                        <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Save</button>
+                    </form>
+                      </div>
+                              
+                  </div>
+                  <% }else{ %>
+                    <h5 style="color: red;">No Customer found.</h5>
+                  <% } 
+                   } %>
+                </div>
+              </div>
+
+
+          </div>
+          <%- include('partials/footer'); %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('partials/vendor'); %>
+
+    <!-- Page level custom scripts -->
+   
+  </body>
+</html>

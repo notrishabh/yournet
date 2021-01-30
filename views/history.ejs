@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>History</title>
+    <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+    <link
+      href="/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/main.css" />
+
+    <link
+      href="/vendor/datatables/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+    />
+
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <%- include('partials/sidebar', { dashboard : '', payments : '',
+      complaints : '',history : 'active', worker : '', region : '', brand : '', offlinePayments : '', offlineComplaints : '',newStb : '',unpaidList : '', fullList : '' }); %>
+
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <%- include('partials/topbar', {heading: 'Customer History'}); %>
+
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <% include ./partials/messages %>
+            <p class="lead" style="color: red;"><%=success%></p>
+
+            
+            
+
+            <h1 class="h4 mb-4 text-gray-800">
+              Enter the Details of the Customer
+            </h1>
+
+            <form class="form-inline" method="POST" autocomplete="off">
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="stbNumber" class="sr-only">User ID</label>
+                  <input type="text" class="form-control" id="stbNumber" name="stb" placeholder="User ID" required>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Check Details</button>
+              </form>
+              
+
+              <div style="display: <%=displayDetails%>;">
+                
+                <div class="card shadow  mb-5 mt-3 bg-white rounded border-info">
+                  <h5 class="card-header">Customer Details</h5>
+                  <div class="card-body">
+                <% if(results != 'none'){
+                 if(results.length != 0){ %>
+                    <h5 class="card-title"> Name : <%=results[0].Name%></h5>
+                    <p class="card-text"> Address : <%=results[0].Address%></p>
+                    <p class="card-text">Mobile : <%=results[0].Mobile%></p>
+                    <p class="card-text">User ID : <%=results[0].Stb%></p>
+                    <p class="card-text">Brand : <%=brand[0].brand_name%></p>
+                    <p class="card-text">Validity : <%=validity%></p>
+                    <p class="card-text">Speed : <%=speed%></p>
+                    <% if(status == 1){ %>
+                      <p class="card-text">Status : <span style="color: green;">Activated</span></p>
+                    <% }else if(status == 2){ %>
+                      <p class="card-text">Status : <span style="color: rgb(69, 154, 204);">Balance Due</span></p>
+                    <% }else{ %>
+                      <p class="card-text">Status : <span style="color: red;">Deactivated</span></p>
+                    <% }%>
+                    <% if(suspended){ %>
+                      <form class="form-inline" action="/adminPanel/history/unsuspend"  method="POST">
+                        <input type="hidden" name="stb" value="<%=results[0].Stb%>">
+                        <p><span style="color: red;font-size: 20px;">Suspended</span></p>
+
+                        <button onclick=confirmBtn() class="btn btn-secondary mb-3 ml-3" id="unsusp"><i class="fas fa-user-plus"></i> Unsuspend</button>
+                      </form>
+                   <% } %>
+                    <h4 class="card-text text-gray-800">Total amount : <span style="color: green;"><%=sumTotal[0].sum%></span></h4>
+                  </div>
+                </div>
+                
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Amount</th>
+                              <th>Date Paid</th>
+                              <th>Date Start</th>
+                              <th>Date Expired</th>
+                            </tr>
+                          </thead>
+                          <tbody> 
+                            <% for(var i=0; i<results.length; i++) { 
+                              var date = results[i].datePaid.toString().split("GMT");
+                              var dateExpiry = results[i].dateExpiry.toString().split("GMT");
+                              var dateStart = results[i].dateStart.toString().split("GMT");
+      
+                              %>
+
+                              <tr>
+                                <td><%= i+1 %></td>
+                                <td><%= results[i].Amount %></td>
+                                <td><%= date[0] %></td>
+                                <td><%= dateStart[0] %></td>
+                                <td><%= dateExpiry[0] %></td>
+                              </tr>
+                            <% } %> 
+                                
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <% }else{ %>
+                    <h5 style="color: red;">No payment history found for this customer.</h5>
+                  <% } 
+                   } %>
+                </div>
+              </div>
+
+
+          </div>
+          <%- include('./partials/footer'); %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./partials/vendor'); %>
+
+    <!-- Page level custom scripts -->
+
+    <!-- Page level plugins -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/scripts/datatables.js"></script>
+
+    <script>
+        $('#dataTable').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "searching" : false,
+            "ordering" : false
+        });
+
+        function confirmBtn(){
+            var r = confirm("Are you sure you want to unsuspend the STB?");
+            if(r==true){
+                document.getElementById('unsusp').type = "submit";
+            }else{
+                document.getElementById('unsusp').type = "reset";
+            }
+        }
+    </script>
+   
+  </body>
+</html>

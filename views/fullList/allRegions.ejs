@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Full List (<%=results[0].region_name%>)</title>
+    <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+
+    
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+    <link rel="stylesheet" href="/main.css">
+
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+ 
+ <body id="page-top">
+   <div id="wrapper">
+        <!-- Sidebar -->
+          <%- include('../partials/sidebar', {
+            dashboard : '',
+            payments : '',
+            complaints : '',
+            history : '',
+            worker : '',
+            region : '',
+            brand : '',
+            offlinePayments : '',
+            offlineComplaints : '',
+            newStb : '',
+            unpaidList : '',
+            fullList : 'active'
+          }); %>
+
+          <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+              <%- include('../partials/topbar', {heading: `Full List (${results[0].region_name})`}); %>
+
+              <!-- End of Topbar -->
+      
+              <!-- Begin Page Content -->
+              <div class="container-fluid">
+                <% include ../partials/messages %>
+                <p class="lead" style="color: red;"><%=success%></p>
+
+
+                <div class="container-fluid">
+                  <div class="row align-items-center">
+                    <div class="col-md-4">
+                      <div class="row align-items-center">
+                        <a href="/adminPanel/fullList/<%=brand%>/regionList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+                      </div>
+                    </div>
+                    <div class="col-md-4 offset-md-4">
+                      <div class="row align-items-center">
+                        <p class="lead mb-4 text-gray-800 mr-3">Payment records for this month</p>
+                        <a href="/adminPanel/fullList/<%=brand%>/<%=region_id%>/download" class="btn btn-primary mb-3 p-2">Download <i class="fas fa-arrow-circle-down"></i></a>
+    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container-fluid mb-4" id="editForm" style="display: none;">
+                  <div class="card shadow">
+                      <h5 class="card-header">Customer Edit Form</h5>
+                      <div class="card-body">
+    
+                        <form action="/adminPanel/fullList/edit/<%=brand%>/<%=region_id%>" method="POST">
+                          <input type="hidden" id="stb" name="stb">
+                          <input type="hidden" id="cid" name="cid">
+                          <div class="form-group">
+                              <label for="name">Name</label>
+                              <input type="text" class="form-control" id="nameEdit" name="name"  required>
+                          </div>
+                          <!-- <div class="form-group">
+                              <label for="address">Address</label>
+                              <input type="text" class="form-control" id="addressEdit" name="address"  required>
+                          </div> -->
+                          <div class="form-group">
+                            <label for="address">Address</label>
+                            <div class="row">
+                                <div class="col-2">
+                                    <select class="form-control" name="region" id="regionEdit" required>
+                                        <option value="">Select Region</option>
+                                        <% for(var i=0; i< regionList.length; i++){%>
+                                            <option value="<%=regionList[i].id%>"><%=regionList[i].region_name%></option>
+                                        <%}%>
+                                    </select>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control" id="addressEdit" name="address" placeholder="Address Field" required>
+                                </div>
+                            </div>
+                        </div>
+                          <div class="form-group">
+                              <label for="mobile">Mobile</label>
+                              <input type="text" class="form-control" id="mobileEdit" name="mobile" >
+                          </div>
+                          <div class="form-group">
+                            <label for="stb">User ID</label>
+                            <div class="row">
+                              <div class="col-2">
+                                <select class="form-control" name="brand" required>
+                                    <option value="">Select Brand</option>
+                                    <% for(var i=0; i< brandList.length; i++){%>
+                                        <option value="<%=brandList[i].id%>"><%=brandList[i].brand_name%></option>
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="col-10">
+                              <input type="text" class="form-control" id="stbEdit" name="stbnew" placeholder="User ID" required>
+                            </div>
+                            </div>
+                            
+                        </div>
+                            <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-user-edit"></i> Edit</button>
+                        </form>
+                          </div>    
+                      </div>
+              </div>
+
+
+                          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Table View</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile</th>
+                      <th>User ID</th>
+                      <th><%=monthName%></th>
+                      <th>Validity</th>
+                      <th>Speed</th>
+                      <th>Payment Date</th>
+                      <th>Expiry Date</th>
+                      <th>Edit</th>
+                      <th>Suspend</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile</th>
+                      <th>User ID</th>
+                      <th><%=monthName%></th>
+                      <th>Validity</th>
+                      <th>Speed</th>
+                      <th>Payment Date</th>
+                      <th>Expiry Date</th>
+                      <th>Edit</th>
+                      <th>Suspend</th>
+                      <th>Delete</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <% if(results.length){ 
+                      for(var i = 0;i < results.length;i++) { 
+                        var date = results[i].datePaid.toString().split("GMT");
+                        var dateExpiry = results[i].dateExpiry.toString().split("GMT");
+                        %>
+
+                        <tr>
+                          <td><%= results[i].Name %></td>
+                          <td><%= results[i].Address %></td>
+                          <td><%= results[i].Mobile %></td>
+                          <td><%= results[i].Stb %></td>
+                          <td><%= results[i].Amount %></td>
+                          <td><%= results[i].validity %></td>
+                          <td><%= results[i].speed %></td>
+                          <td><%= date[0] %></td>
+                          <td><%= dateExpiry[0] %></td>
+                          <td>
+                           
+                            <button onclick='document.getElementById("nameEdit").value = "<%=results[i].Name%>";
+                             document.getElementById("stbEdit").value = "<%=results[i].Stb%>"; 
+                             document.getElementById("cid").value = "<%=results[i].cid%>"; 
+                             document.getElementById("addressEdit").value = "<%=results[i].Address%>";
+                             document.getElementById("mobileEdit").value = "<%=results[i].Mobile%>"; 
+                             document.getElementById("stb").value = "<%=results[i].Stb%>"; 
+                             var r = confirm("Do you want to continue editing the customer record?");
+                             if(r==true){
+                                 document.getElementById("editForm").style.display="block";
+                             }else{
+                                 document.getElementById("editForm").style.display="none";
+                             }'
+                             class="btn btn-primary" id="editBtn"><i class="fas fa-edit"></i></button>
+                           
+                           </td>
+                           <td>
+                            <form action="/adminPanel/fullList/suspend/<%=brand%>/<%=region_id%>" method="POST">
+                              <div>
+                                <input type="hidden" name="cid" value="<%= results[i].cid %>">
+                                <button class="btn btn-primary" onclick=confirmBtn() id="delBtn"><i class="fas fa-minus-circle"></i></button>
+                              </div>
+                            </form>
+                          </td>
+                           <td>
+                            <form action="/adminPanel/fullList/remove/<%=brand%>/<%=region_id%>" method="POST">
+                              <div>
+                                <input type="hidden" name="cid" value="<%= results[i].cid %>">
+                                <button class="btn btn-primary" onclick=removeBtn() id="remBtn"><i class="fas fa-trash"></i></button>
+                              </div>
+                            </form>
+                          </td>
+                        </tr>
+
+                    <% } 
+                  }else{ %>
+                    <tr>
+                      <td colspan="3">No customers found</td>
+                    </tr>
+                  <% } %>
+                    
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+      
+                
+              </div>
+              <%- include('../partials/footer'); %>
+            </div>
+            </div>
+          </div>
+            
+      
+
+
+          <%- include('../partials/vendor'); %>
+
+            <!-- Page level plugins -->
+            <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="/scripts/datatables.js"></script>
+            <script>
+              $('#dataTable').dataTable({
+                "ordering" : false
+              });
+
+              function confirmBtn(){
+                    var r = confirm("Are you sure you want to suspend the Connection?");
+                    if(r==true){
+                        document.getElementById('delBtn').type = "submit";
+                    }else{
+                        document.getElementById('delBtn').type = "reset";
+                    }
+                }
+              function removeBtn(){
+                    var r = confirm("Are you sure you want to permanently remove the Connection?");
+                    if(r==true){
+                        document.getElementById('remBtn').type = "submit";
+                    }else{
+                        document.getElementById('remBtn').type = "reset";
+                    }
+                }
+            </script>
+
+
+ </body>
+ 
+ </html>

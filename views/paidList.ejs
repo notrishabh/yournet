@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Paid List</title>
+    <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+
+    
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+    <link rel="stylesheet" href="/main.css">
+
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+ 
+ <body id="page-top">
+   <div id="wrapper">
+        <!-- Sidebar -->
+          <%- include('./partials/sidebar', {
+            dashboard : '',
+            payments : '',
+            complaints : '',
+            history : '',
+            worker : '',
+            region : '',
+            brand : '',
+            offlinePayments : '',
+            offlineComplaints : '',
+            newStb : '',
+            unpaidList : '',
+            fullList : 'active'
+          }); %>
+
+          <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+              <%- include('./partials/topbar', {heading: `Paid List`}); %>
+
+              <!-- End of Topbar -->
+      
+              <!-- Begin Page Content -->
+              <div class="container-fluid">
+                <% include ./partials/messages %>
+                <p class="lead" style="color: red;"><%=success%></p>
+
+
+                <div class="container-fluid">
+                  <div class="row align-items-center">
+                    <form class="form-inline" method="POST" autocomplete="off">
+                      <div class="form-group mx-sm-3 mb-2">
+                        <label class="form-check-label" for="month" >Select Month</label>
+                          <select class="form-control ml-3" name="monthDrop" id="month" required>
+                            <option value=""> </option>
+                            <% var month = new Array();
+                            month[0] = "January";
+                            month[1] = "February";
+                            month[2] = "March";
+                            month[3] = "April";
+                            month[4] = "May";
+                            month[5] = "June";
+                            month[6] = "July";
+                            month[7] = "August";
+                            month[8] = "September";
+                            month[9] = "October";
+                            month[10] = "November";
+                            month[11] = "December"; %>
+                              <% for(var i=0; i < 12 ; i++){%>
+                                <option value="<%=i%>"><%= month[i] %></option>
+                            <%}%>
+                        </select>  
+                      </div>
+                      <button type="submit" class="btn btn-primary mb-2">View Data</button>
+                    </form>
+                    
+                  </div>
+                </div>
+
+
+                          <!-- DataTales Example -->
+
+                          <div style="display: <%=displayDetails%>;">
+                            <div class="col-md-4 offset-md-8">
+                              <div class="row align-items-center">
+                                <p class="lead mb-4 text-gray-800 mr-3">Payment records for <%=monthName%></p>
+                                <a href="/adminPanel/paidList/<%=monthDrop%>/download" class="btn btn-primary mb-3 p-2">Download <i class="fas fa-arrow-circle-down"></i></a>
+                              </div>
+                            </div>
+                            <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Table View</h6>
+                              </div>
+                              <div class="card-body">
+                                <div class="table-responsive">
+                                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                      <tr>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Mobile</th>
+                                        <th>User ID</th>
+                                        <th>Amount</th>
+                                      </tr>
+                                    </thead>
+                                    <tfoot>
+                                      <tr>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Mobile</th>
+                                        <th>User ID</th>
+                                        <th>Amount</th>
+                                      </tr>
+                                    </tfoot>
+                                    <tbody>
+                                      <% if(results.length || results != undefined){ 
+                                        for(var i = 0;i < results.length;i++) { 
+                                          
+                                          %>
+                  
+                                          <tr>
+                                            <td><%= results[i].Name %></td>
+                                            <td><%= results[i].Address %></td>
+                                            <td><%= results[i].Mobile %></td>
+                                            <td><%= results[i].Stb %></td>
+                                            <td><%= results[i].Amount %></td>
+                                            
+                                          </tr>
+                  
+                                      <% } 
+                                    }else{ %>
+                                      <tr>
+                                        <td colspan="3">No customers found</td>
+                                      </tr>
+                                    <% } %>
+                                      
+                  
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+
+                
+              </div>
+              <%- include('./partials/footer'); %>
+            </div>
+            </div>
+          </div>
+            
+      
+
+
+          <%- include('./partials/vendor'); %>
+
+            <!-- Page level plugins -->
+            <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="/scripts/datatables.js"></script>
+            <script>
+              $('#dataTable').dataTable({
+                "ordering" : false
+              });
+
+              function confirmBtn(){
+                    var r = confirm("Are you sure you want to suspend the STB?");
+                    if(r==true){
+                        document.getElementById('delBtn').type = "submit";
+                    }else{
+                        document.getElementById('delBtn').type = "reset";
+                    }
+                }
+            </script>
+
+
+ </body>
+ 
+ </html>

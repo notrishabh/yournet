@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/8436e174fd.js" crossorigin="anonymous"></script>
+        <title>Payment Receipt</title>
+        <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+            <style>
+                img{
+                    width: 30%;
+                    display:block;
+                    margin:auto;
+                }
+                .container{
+                    text-align: center;
+                }
+                table{
+                    margin-top: 5%;
+                    border: 1px solid black;
+                }
+                
+            </style>
+    </head>
+    <body>
+        <div class="container">
+        <div class="col-md-6 offset-md-3">
+          <img src="https://openjournalsystems.com/wp-content/uploads/2017/07/payment-success.png">
+          <h1 class="display-4">Payment Successful!</h1>
+            <table class="table table-borderless">
+                <tbody>
+                  <tr>
+                    <td>Stb Number</td>
+                    <td><%= stb %></td>
+                  </tr>
+                  <tr>
+                    <td>Order ID</td>
+                    <td><%= orderId %></td>
+                  </tr>
+                  <tr>
+                    <td>Transaction ID</td>
+                    <td><%= txnId %></td>
+                  </tr>
+                  <tr class="table-success">
+                    <td>Transaction Amount</td>
+                    <td><%= txnAmount %></td>
+                  </tr>
+                  <tr>
+                    <td>Payment Mode</td>
+                    <td><%= paymentMode %></td>
+                  </tr>
+                  <tr>
+                    <td>Transaction Date</td>
+                    <td><%= txnDate %></td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td><%= status %></td>
+                  </tr>
+                  <tr>
+                    <td>Bank Name</td>
+                    <td><%= bankName %></td>
+                  </tr>
+                  <tr>
+                    <td>Bank Transaction ID</td>
+                    <td><%= bankTxnId %></td>
+                  </tr>
+                </tbody>
+              </table>
+              <a class="btn btn-info" href="/customerPanel">Back to your Profile</a>
+        </div>
+        </div>
+    </body>
+</html>

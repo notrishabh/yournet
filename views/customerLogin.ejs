@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaba Cable</title>
+    <link rel="icon" href="wicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Poppins&display=swap" rel="stylesheet">    
+    <script src="https://kit.fontawesome.com/8436e174fd.js" crossorigin="anonymous"></script>
+    <style>
+        body{
+            font-family: 'Poppins';
+        }
+        #logo{
+            height: 60px;
+        }
+        #right-nav{
+            padding-right: 3%;
+        }
+        #navbar-right-link{
+            font-size: 16px;
+            color: #890505;
+            margin-right: 20px
+        }
+        #navbar-right-link:hover{
+            color: #bb4747;
+        }
+        #text{
+            font-family: 'Poppins', serif;
+            margin: 10%;
+        }
+        #companytext{
+            color: red;
+            font-family: 'Noto Serif';
+            margin: 10%;
+            margin-top: 0;
+            font-size: 50px;
+        }
+        #form{
+            margin-top: 8%;
+        }
+        #quesmark{
+            font-size: 40px;
+            color: rgb(255, 198, 198);
+        }
+        #loginaftertext{
+            text-align: center;
+        }
+        form{
+            background-color: #FFEEEE;
+            padding: 20px;
+        }
+        #youCanBox{
+            font-family: 'Poppins', serif;
+            margin: 10%;
+            color: rgb(107, 107, 107);
+        }
+        #brandlogo{
+            margin-left: 3%;
+        }
+        @media only screen and (max-width: 900px) {
+            #log {
+                display: none;
+            }
+            }
+        #log{
+            position: absolute;
+            opacity: 0.9;
+            width: 30vw;
+        }
+    </style>
+</head>
+<body>
+    <% include ./partials/nav-5 %>
+      <div class="container">
+         
+        <div class="row">
+            <div class="col-md-6">
+                  <h1 id="text">
+                    Is your set top box maintained by
+                  </h1>           
+                  <h1 id="companytext">
+                    Gaba Cable <span id="quesmark">?</span>
+                  </h1>
+                <div id="youCanBox">
+                <h2>You can :</h2>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">View your Profile</li>
+                    <li class="list-group-item">Pay your Bills</li>
+                    <li class="list-group-item">File a Complaint</li>
+                  </ul>
+                  <h4 id="loginaftertext">After you Login</h4>
+                  </div>
+                  
+            </div> 
+            <div class="col-md-4 ml-auto mb-5" id="form">
+                <h4 style="margin-bottom: 5%;">Login as a Customer</h4>
+                <form action="/" method="POST" autocomplete="off">
+                    <div class="form-group">
+                        <% include ./partials/messages %>
+                        <p class="lead" style="color: red;"><%=error%></p>
+                        <label for="stbNumber">Set-Top-Box Number</label>
+                        <input type="text" class="form-control" name="stbNumber" placeholder="XXXXXXXX" required>
+                    </div>
+                    <button type="submit" class="btn btn-outline-danger">Login</button>
+                    <img src="log.svg" id="log">
+                </form>
+            </div>
+
+        </div>
+
+        </div>
+
+      
+</body>
+</html>
