@@ -33,14 +33,7 @@ db = mysql.createPool({
     database : 'net',
     multipleStatements : true
 });
-// db = mysql.createPool({
-//     connectionLimit : 20,
-//     host : 'harmony.herosite.pro',
-//     user : 'gacckksh_rishabh',
-//     password : 'RRclub@107',
-//     database : 'gacckksh_gaba',
-//     multipleStatements : true
-// });
+
 
 var sessionStore = new MySQLStore({
     createDatabaseTable: true,
