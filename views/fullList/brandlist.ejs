@@ -82,6 +82,17 @@
                     </tr>
                   </tfoot>
                   <tbody>
+                    <tr>
+                      <td>#</td>
+                      <td>ALL</td>
+                      <td><%= all[0].allFull %></td>
+                      <td>
+                        <a href="/adminPanel/fullList/all" class="btn btn-primary"><i class="fas fa-book-open"></i></a>
+                      </td>
+                      <td>
+                        <a href="/adminPanel/fullList/all/download" class="btn btn-primary"><i class="fas fa-arrow-circle-down"></i></a>
+                      </td>
+                    </tr>
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
                         %>

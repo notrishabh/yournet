@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Unpaid List (<%=results[0].region_name%>)</title>
+    <title>Unpaid List (ALL)</title>
     <link rel="icon" href="/wicon.jpg" type="image/x-icon">
 
 
@@ -19,11 +19,19 @@
 
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-    <script>
-      function fields(){
-        document.getElementById('customField').disabled = false;
+      <script>
+      function balanceFields(){
+        document.getElementById('balanceField').disabled = false;
       }
     </script>
+    
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    </style>
 
 </head>
  
@@ -33,7 +41,7 @@
 
             <!-- Main Content -->
             <div id="content">
-              <%- include('../partials/workerTopbar', {heading: `Unpaid List (${results[0].region_name})`}); %>
+              <%- include('../partials/workerTopbar', {heading: `Unpaid List (ALL)`}); %>
 
               <!-- End of Topbar -->
       
@@ -43,68 +51,87 @@
                 <p class="lead" style="color: red;"><%=success%></p>
 
                 <div class="container-fluid">
-                  <div class="row align-items-center">
-                    <div class="col-md-4">
-                      <div class="row align-items-center">
-                        <a href="/workerPanel/unpaidList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
-                      </div>
-                    </div>
-                  </div>
+                
 
 
-                <div class="container-fluid mb-4" id="payForm" style="display: none;">
-                  <div class="card shadow">
-                      <h5 class="card-header">Payment Entry Form</h5>
-                      <div class="card-body">
-    
-                        <form action="/workerPanel/unpaidList/<%=region_id%>/pay" method="POST">
-                          <input type="hidden" name='Stb' id='Stb'>
-                          <div class="form-check mb-3">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="153" required>
-                            <label class="form-check-label" for="exampleRadios1">
-                              Basic Pack <i class="fas fa-rupee-sign"></i> 153
-                            </label>
-                          </div>
-                          <div class="form-check mb-3">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="275">
-                            <label class="form-check-label" for="exampleRadios2">
-                              Silver Pack <i class="fas fa-rupee-sign"></i> 275
-                            </label>
-                          </div>
-                          <div class="form-check mb-3">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="360">
-                            <label class="form-check-label" for="exampleRadios3">
-                              Gold Pack <i class="fas fa-rupee-sign"></i> 360
-                            </label>
-                          </div>
-                          <div class="form-check mb-3">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="454">
-                            <label class="form-check-label" for="exampleRadios4">
-                              Diamond Pack <i class="fas fa-rupee-sign"></i> 454
-                            </label>
-                          </div>
-                          <div class="form-check mb-3">
-                            <div class="row align-items-center">
-                              <div class="col-4">
-                                <input type="radio" name="exampleRadios" id="customRadio" class="form-check-input" onclick=fields()>
-                                <label class="form-check-label" for="customRadio" >Custom Amount</label>
-                                <input type="text" class="ml-3" name="exampleField" id="customField"  disabled required /> 
-                              </div> 
-                                <div class="col-3">
-                                  <select class="form-control" name="duration" required>
-                                      <% for(var i=1; i<= 12 ; i++){%>
-                                        <option value="<%=i%>"><%=i%> Months</option>
-                                    <%}%>
-                                </select>                        
-                              </div>  
-                              
+                  <div class="container-fluid mb-4" id="payForm" style="display: none;">
+                    <div class="card shadow">
+                        <h5 class="card-header">Payment Entry Form</h5>
+                        <div class="card-body">
+      
+                          <form action="/workerPanel/unpaidList/pay" method="POST">
+                            <input type="hidden" name='Stb' id='Stb'>
+                            <input type="hidden" name='totalBalance' id='totalBalance'>
+                            <div class="form-row mb-3">
+                              <div class="col">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" disabled>
+                              </div>
+                              <div class="col">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" disabled>
+                              </div>
+                              <div class="col">
+                                <label for="mobile">Mobile</label>
+                                <input type="text" class="form-control" id="mobile" disabled>
+                              </div>
+                              <div class="col">
+                                <label for="stbDisp">User ID</label>
+                                <input type="text" class="form-control" id="stbDisp" disabled>
+                              </div>
                             </div>
-                          </div>
-                            <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Pay</button>
-                          </div>
-                        </form>  
-                          </div>    
-                      </div>
+  
+                              <div class="form-row mb-3 align-items-center">
+                                <div class="col-md-3">
+                                  <label class="form-check-label" for="customField" >Total Amount</label>
+                                  <input type="number" class="form-control" name="exampleField" id="customField"  required /> 
+                                </div> 
+                                  <div class="col-md-3">
+                                    <label class="form-check-label" for="duration" >Validity</label>
+                                    <select class="form-control" name="duration" id="duration" required>
+                                        <option id="default_validity"></option>
+                                        <% for(var i=1; i<= 12 ; i++){%>
+                                          <option value="<%=i%>"><%=i%> Months</option>
+                                        <%}%>
+                                  </select>                        
+                                </div>  
+                                  <div class="col-md-3">
+                                    <label class="form-check-label" for="speed" >Speed</label>
+                                    <select class="form-control" name="speed" id="speed" required>
+                                          <option id="default_speed"></option>
+                                          <option value="25">25 Mbps</option>
+                                          <option value="50">50 Mbps</option>
+                                          <option value="75">75 Mbps</option>
+                                          <option value="100">100 Mbps</option>
+                                          <option value="150">150 Mbps</option>
+                              
+                                  </select>                        
+                                </div>  
+                                <div class="col-md-3">
+                                  <label class="form-check-label" for="startDate" >Start Date</label>
+                                  <input type="date" name="startDate" max="3000-12-31" 
+                                         min="1000-01-01" class="form-control" id="startDate">
+                                </div>
+                                
+                              </div>
+                              
+                              
+                         
+                            <div class="form-check mb-3">
+                              <div class="form-row align-items-center">
+                                <div class="col-4">
+                                  <input type="radio" name="balanceRadio" id="customRadio" class="form-check-input" onclick=balanceFields()>
+                                  <label class="form-check-label" for="balanceRadio" >Balance</label>
+                                  <input type="number" class="ml-4" name="balanceField" id="balanceField"  disabled required /> 
+                                </div> 
+                              </div>
+                            </div>
+                            
+                              <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Pay</button>
+                            </div>
+                          </form>  
+                            </div>    
+                        </div>
                 </div>
 
 
@@ -118,29 +145,84 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                        <th>Pay</th>
+                      <th>Pay</th>
                       <th>Name</th>
                       <th>Address</th>
                       <th>Mobile</th>
-                      <th>STB No.</th>
+                      <th>User ID</th>
+                      <th>Brand</th>
+                      <th>Amount</th>
+                      <th>Validity</th>
+                      <th>Speed</th>
                     </tr>
                   </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Pay</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile</th>
+                      <th>User ID</th>
+                      <th>Brand</th>
+                      <th>Amount</th>
+                      <th>Validity</th>
+                      <th>Speed</th>
+                    </tr>
+                  </tfoot>
                   <tbody>
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
+                        var d = new Date();
+                        var totalBalance;
+                        var styler="black";
+                        var bton = "inline";
+                        var vali = 1;
+                        var spee = 25;
+                        if(results[i].balance != 0){
+                          if(results[i].dateExpiry > d){
+                            totalBalance = results[i].balance;
+                            styler="red";
+                            bton="none";
+                          }else{
+                            totalBalance = results[i].PrevAmount + 2 * results[i].balance;
+                          }
+                        }else{
+                          totalBalance = results[i].PrevAmount;
+                        }
+                        if(results[i].validity != 0){
+                          vali = results[i].validity;
+                        }
+                        if(results[i].speed != 0){
+                          spee = results[i].speed;
+                        }
                         %>
 
-                        <tr>
-                        <td>
-                            <button class="btn btn-primary" 
+                        <tr style="color:<%=styler%>;">
+                          <td>
+                            <button class="btn btn-primary" style="display: <%=bton%>;"
                             onclick="document.getElementById('payForm').style.display = 'block'; 
-                            document.getElementById('Stb').value = '<%=results[i].Stb%>'"
+                            document.getElementById('Stb').value = `<%=results[i].Stb%>`;
+                            document.getElementById('customField').value = `<%= totalBalance %>`;
+                            document.getElementById('totalBalance').value = `<%= totalBalance %>`;
+                            document.getElementById('name').value = `<%= results[i].Name %>`;
+                            document.getElementById('address').value = `<%= results[i].Address %>`;
+                            document.getElementById('mobile').value = `<%= results[i].Mobile %>`;
+                            document.getElementById('default_validity').value = `<%= vali %>`;
+                            document.getElementById('default_validity').innerHTML = `<%= vali %> Months`;
+                            document.getElementById('default_speed').value = `<%= spee %>`;
+                            document.getElementById('default_speed').innerHTML = `<%= spee %> Mbps`;
+                            document.getElementById('stbDisp').value = `<%= results[i].Stb %>`;"
                             ><i class="fas fa-money-bill-wave"></i></button>
-                        </td>
+                          </td>
                           <td><%= results[i].Name %></td>
                           <td><%= results[i].Address %></td>
                           <td><%= results[i].Mobile %></td>
                           <td><%= results[i].Stb %></td>
+                          <td><%= results[i].brand_name %></td>
+                          <td><%= totalBalance %></td>
+                          <td><%= results[i].validity %></td>
+                          <td><%= results[i].speed %></td>
+                         
                         </tr>
 
                     <% } 
@@ -177,11 +259,19 @@
 
             <!-- Page level custom scripts -->
             <script src="/scripts/datatables.js"></script>
-            <script>
+              <script>
               $('#dataTable').dataTable({
-                "ordering" : false,
-                "lengthChange": false
+                "ordering" : false
               });
+
+              
+                var myDate = document.getElementById("startDate");
+                var date1 = new Date();
+                myDate.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+
+                // var midnightUtcDate = myDate.valueAsDate;
+                // var date2 = new Date(midnightUtcDate.getUTCFullYear(), midnightUtcDate.getUTCMonth(), midnightUtcDate.getUTCDate());
+                          
             </script>
 
 

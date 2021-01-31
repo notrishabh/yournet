@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Full List (<%=results[0].region_name%>)</title>
+    <title>Full List (ALL)</title>
     <link rel="icon" href="/wicon.jpg" type="image/x-icon">
 
 
@@ -43,7 +43,7 @@
 
             <!-- Main Content -->
             <div id="content">
-              <%- include('../partials/topbar', {heading: `Full List (${results[0].region_name})`}); %>
+              <%- include('../partials/topbar', {heading: `Full List (ALL})`}); %>
 
               <!-- End of Topbar -->
       
@@ -57,13 +57,13 @@
                   <div class="row align-items-center">
                     <div class="col-md-4">
                       <div class="row align-items-center">
-                        <a href="/adminPanel/fullList/<%=brand%>/regionList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+                        <a href="/adminPanel/fullList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
                       </div>
                     </div>
                     <div class="col-md-4 offset-md-4">
                       <div class="row align-items-center">
                         <p class="lead mb-4 text-gray-800 mr-3">Payment records for this month</p>
-                        <a href="/adminPanel/fullList/<%=brand%>/<%=region_id%>/download" class="btn btn-primary mb-3 p-2">Download <i class="fas fa-arrow-circle-down"></i></a>
+                        <a href="/adminPanel/fullList/all/download" class="btn btn-primary mb-3 p-2">Download <i class="fas fa-arrow-circle-down"></i></a>
     
                       </div>
                     </div>
@@ -74,7 +74,7 @@
                       <h5 class="card-header">Customer Edit Form</h5>
                       <div class="card-body">
     
-                        <form action="/adminPanel/fullList/edit/<%=brand%>/<%=region_id%>" method="POST">
+                        <form action="/adminPanel/fullList/edit/all" method="POST">
                           <input type="hidden" id="stb" name="stb">
                           <input type="hidden" id="cid" name="cid">
                           <div class="form-group">
@@ -132,7 +132,7 @@
                     <h5 class="card-header">Complaint Entry Form</h5>
                     <div class="card-body">
   
-                      <form action="/adminPanel/fullList/<%=brand%>/<%=region_id%>/complaint" method="POST">
+                      <form action="/adminPanel/fullList/all/complaint" method="POST">
                         <input type="hidden" name='Stb' id='stbComp'>
                         <div class="form-row mb-3">
                           <div class="col">
@@ -250,7 +250,7 @@
                            
                            </td>
                            <td>
-                            <form action="/adminPanel/fullList/suspend/<%=brand%>/<%=region_id%>" method="POST">
+                            <form action="/adminPanel/fullList/suspend/all" method="POST">
                               <div>
                                 <input type="hidden" name="cid" value="<%= results[i].cid %>">
                                 <button class="btn btn-primary" onclick=confirmBtn() id="delBtn"><i class="fas fa-minus-circle"></i></button>
@@ -269,8 +269,9 @@
                              class="btn btn-primary" id="compBtn"><i class="fas fa-bullhorn"></i></button>
                            
                            </td>
+
                            <td>
-                            <form action="/adminPanel/fullList/remove/<%=brand%>/<%=region_id%>" method="POST">
+                            <form action="/adminPanel/fullList/remove/all" method="POST">
                               <div>
                                 <input type="hidden" name="cid" value="<%= results[i].cid %>">
                                 <button class="btn btn-danger" onclick=removeBtn() id="remBtn"><i class="fas fa-trash"></i></button>

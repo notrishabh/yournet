@@ -11,15 +11,19 @@ route.get('/', ensureAuthenticateds, (req,res)=>{
 });
 
 
-
 route.get('/logout', (req,res)=>{
     req.logOut();
-    req.flash('success_msg', 'You have logged out');
-    res.redirect('/adminLogin');
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid')
+        // req.flash('success_msg', 'You have logged out');
+        res.redirect('/adminLogin');
+    });
+    
 });
 
 route.use('/paymentEntry', require('./paymentEntry'));
 route.use('/unpaidList', require('./unpaidListWorker'));
+route.use('/complaints', require('./complaintWorker'));
 
 
 
