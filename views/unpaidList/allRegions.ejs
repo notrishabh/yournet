@@ -21,7 +21,20 @@
 
     <script>
       function balanceFields(){
-        document.getElementById('balanceField').disabled = false;
+       var bf =  document.getElementById('balanceField');
+       if(bf.disabled){
+         bf.disabled = false;
+       }else{
+         bf.disabled = true;
+       }
+      }
+      function balanceFieldsdue(){
+       var bf =  document.getElementById('balanceFielddue');
+       if(bf.disabled){
+         bf.disabled = false;
+       }else{
+         bf.disabled = true;
+       }
       }
     </script>
     
@@ -90,6 +103,7 @@
     
                         <form action="/adminPanel/unpaidList/<%=brand%>/<%=region_id%>/pay" method="POST">
                           <input type="hidden" name='Stb' id='Stb'>
+                          <input type="hidden" name='cid' id='cid'>
                           <input type="hidden" name='totalBalance' id='totalBalance'>
                           <div class="form-row mb-3">
                             <div class="col">
@@ -146,7 +160,7 @@
                             
                             
                        
-                          <div class="form-check mb-3">
+                          <!-- <div class="form-check mb-3">
                             <div class="form-row align-items-center">
                               <div class="col-4">
                                 <input type="radio" name="balanceRadio" id="customRadio" class="form-check-input" onclick=balanceFields()>
@@ -154,6 +168,26 @@
                                 <input type="number" class="ml-4" name="balanceField" id="balanceField"  disabled required /> 
                               </div> 
                             </div>
+                          </div> -->
+                          <div class="row mb-3 align-items-center">
+                            <div class="form-check mb-3">
+                              <div class="col">
+
+                                <input class="form-check-input" type="checkbox" value="" id="customRadio" onclick=balanceFields()>
+                                <label class="form-check-label" for="customRadio" >Balance</label>
+                              </div>
+                            </div>
+                                <div class="col-3">
+                                  <input type="number" class="form-control" name="balanceField" id="balanceField"  disabled required /> 
+                                </div>
+                            
+                          </div>
+              
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="0" name="paymentDue" id="paymentDue" onclick='document.getElementById("paymentDue").value = 1;'>
+                            <label class="form-check-label" for="paymentDue">
+                              Payment Due
+                            </label>
                           </div>
                           
                             <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Pay</button>
@@ -161,6 +195,94 @@
                         </form>  
                           </div>    
                       </div>
+                      <div class="container-fluid mb-4" id="dueForm" style="display: none;">
+                        <div class="card shadow">
+                            <h5 class="card-header">Payment due Form</h5>
+                            <div class="card-body">
+          
+                              <form action="/adminPanel/unpaidList/<%=brand%>/<%=region_id%>/due" method="POST">
+                                <input type="hidden" name='Stb' id='Stbdue'>
+                                <input type="hidden" name='cid' id='ciddue'>
+                                <input type="hidden" name='totalBalance' id='totalBalancedue'>
+                                <input type="hidden" name='amountId' id='amountIddue'>
+                                <div class="form-row mb-3">
+                                  <div class="col">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="namedue" disabled>
+                                  </div>
+                                  <div class="col">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="addressdue" disabled>
+                                  </div>
+                                  <div class="col">
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" class="form-control" id="mobiledue" disabled>
+                                  </div>
+                                  <div class="col">
+                                    <label for="stbDisp">User ID</label>
+                                    <input type="text" class="form-control" id="stbDispdue" disabled>
+                                  </div>
+                                </div>
+      
+                                  <div class="form-row mb-3 align-items-center">
+                                    <div class="col-md-3">
+                                      <label class="form-check-label" for="customField" >Total Amount</label>
+                                      <input type="number" class="form-control" name="exampleField" id="customFielddue"  required /> 
+                                    </div> 
+                                    <div class="col-md-3">
+                                      <label class="form-check-label" for="duration" >Validity</label>
+                                      <input type="text" class="form-control" name="duration" id="default_validitydue"  disabled /> 
+                                    </div> 
+                                      <!-- <div class="col-md-3">
+                                        <label class="form-check-label" for="duration" >Validity</label>
+                                        <select class="form-control" name="duration" id="duration" required>
+                                            <option id="default_validitydue"></option>
+                                            <% for(var i=1; i<= 12 ; i++){%>
+                                              <option value="<%=i%>"><%=i%> Months</option>
+                                            <%}%>
+                                      </select>                        
+                                    </div>   -->
+                                      <div class="col-md-3">
+                                        <label class="form-check-label" for="speed" >Speed</label>
+                                        <select class="form-control" name="speed" id="speed" required>
+                                              <option id="default_speeddue"></option>
+                                              <option value="25">25 Mbps</option>
+                                              <option value="50">50 Mbps</option>
+                                              <option value="75">75 Mbps</option>
+                                              <option value="100">100 Mbps</option>
+                                              <option value="150">150 Mbps</option>
+                                  
+                                      </select>                        
+                                    </div>  
+                                    <!-- <div class="col-md-3">
+                                      <label class="form-check-label" for="startDate" >Start Date</label>
+                                      <input type="date" name="startDate" max="3000-12-31" 
+                                             min="1000-01-01" class="form-control" id="startDate">
+                                    </div> -->
+                                    
+                                  </div>
+                                  
+                                                       
+                                <div class="row mb-3 align-items-center">
+                                  <div class="form-check mb-3">
+                                    <div class="col">
+      
+                                      <input class="form-check-input" type="checkbox" value="" id="customRadio" onclick=balanceFieldsdue()>
+                                      <label class="form-check-label" for="customRadio" >Balance</label>
+                                    </div>
+                                  </div>
+                                      <div class="col-3">
+                                        <input type="number" class="form-control" name="balanceField" id="balanceFielddue"  disabled required /> 
+                                      </div>
+                                  
+                                </div>
+                    
+                                
+                                  <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Confirm paid</button>
+                                </div>
+                              </form>  
+                                </div>    
+                            </div>
                 </div>
 
 
@@ -205,7 +327,7 @@
                         var bton = "inline";
                         var vali = 1;
                         var spee = 25;
-                        if(results[i].balance != 0){
+                        if(results[i].balance != 0 && results[i].isDue == 0){
                           if(results[i].dateExpiry > d){
                             totalBalance = results[i].balance;
                             styler="red";
@@ -222,6 +344,9 @@
                         if(results[i].speed != 0){
                           spee = results[i].speed;
                         }
+                        if(results[i].isDue == 1){
+                          styler="darkgreen";
+                        }
                         %>
 
                         <tr style="color:<%=styler%>;">
@@ -232,22 +357,45 @@
                           <td><%= totalBalance %></td>
                           <td><%= results[i].validity %></td>
                           <td><%= results[i].speed %></td>
-                          <td>
-                            <button class="btn btn-primary" style="display: <%=bton%>;"
-                            onclick="document.getElementById('payForm').style.display = 'block'; 
-                            document.getElementById('Stb').value = `<%=results[i].Stb%>`;
-                            document.getElementById('customField').value = `<%= totalBalance %>`;
-                            document.getElementById('totalBalance').value = `<%= totalBalance %>`;
-                            document.getElementById('name').value = `<%= results[i].Name %>`;
-                            document.getElementById('address').value = `<%= results[i].Address %>`;
-                            document.getElementById('mobile').value = `<%= results[i].Mobile %>`;
-                            document.getElementById('default_validity').value = `<%= vali %>`;
-                            document.getElementById('default_validity').innerHTML = `<%= vali %> Months`;
-                            document.getElementById('default_speed').value = `<%= spee %>`;
-                            document.getElementById('default_speed').innerHTML = `<%= spee %> Mbps`;
-                            document.getElementById('stbDisp').value = `<%= results[i].Stb %>`;"
-                            ><i class="fas fa-money-bill-wave"></i></button>
-                          </td>
+                          <%if(results[i].isDue == 0){ %>
+                            <td>
+                              <button class="btn btn-primary" style="display: <%=bton%>;"
+                              onclick="document.getElementById('payForm').style.display = 'block'; 
+                              document.getElementById('Stb').value = `<%=results[i].Stb%>`;
+                              document.getElementById('cid').value = `<%=results[i].cid%>`;
+                              document.getElementById('customField').value = `<%= totalBalance %>`;
+                              document.getElementById('totalBalance').value = `<%= totalBalance %>`;
+                              document.getElementById('name').value = `<%= results[i].Name %>`;
+                              document.getElementById('address').value = `<%= results[i].Address %>`;
+                              document.getElementById('mobile').value = `<%= results[i].Mobile %>`;
+                              document.getElementById('default_validity').value = `<%= vali %>`;
+                              document.getElementById('default_validity').innerHTML = `<%= vali %> Months`;
+                              document.getElementById('default_speed').value = `<%= spee %>`;
+                              document.getElementById('default_speed').innerHTML = `<%= spee %> Mbps`;
+                              document.getElementById('stbDisp').value = `<%= results[i].Stb %>`;"
+                              ><i class="fas fa-money-bill-wave"></i></button>
+                            </td>
+                          <%} else{ %>
+                              <td>
+                               
+                                  <button class="btn btn-success" style="display: <%=bton%>;"
+                                  onclick="document.getElementById('dueForm').style.display = 'block'; 
+                                  document.getElementById('Stbdue').value = `<%=results[i].Stb%>`;
+                                  document.getElementById('ciddue').value = `<%=results[i].cid%>`;
+                                  document.getElementById('customFielddue').value = `<%= totalBalance %>`;
+                                  document.getElementById('totalBalancedue').value = `<%= totalBalance %>`;
+                                  document.getElementById('amountIddue').value = `<%= results[i].lastAmountId %>`;
+                                  document.getElementById('namedue').value = `<%= results[i].Name %>`;
+                                  document.getElementById('addressdue').value = `<%= results[i].Address %>`;
+                                  document.getElementById('mobiledue').value = `<%= results[i].Mobile %>`;
+                                  document.getElementById('default_validitydue').value = `<%= vali %> Months`;
+                                  document.getElementById('default_speeddue').value = `<%= spee %>`;
+                                  document.getElementById('default_speeddue').innerHTML = `<%= spee %> Mbps`;
+                                  document.getElementById('stbDispdue').value = `<%= results[i].Stb %>`;"
+                                  ><i class="fas fa-check-double"></i></button>
+
+                              </td>
+                          <%}%>             
                         </tr>
 
                     <% } 

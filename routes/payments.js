@@ -18,9 +18,9 @@ route.get("/today", ensureAuthenticateds, (req, res) => {
 
   today = yyyy + "-" + mm + "-" + dd;
 
-  let sql = `SELECT * FROM all_payment WHERE DATE_FORMAT(datePaid, "%Y-%m-%d" ) = "${today}" ORDER BY id DESC`;
+  let sql = `SELECT * FROM all_payment WHERE DATE_FORMAT(datePaid, "%Y-%m-%d" ) = "${today}" AND isDue = 0 ORDER BY id DESC`;
   db.query(sql, (err, results) => {
-    let sql = `SELECT SUM(Amount) AS total FROM all_payment WHERE DATE_FORMAT(datePaid, "%Y-%m-%d" ) = "${today}"`;
+    let sql = `SELECT SUM(Amount) AS total FROM all_payment WHERE DATE_FORMAT(datePaid, "%Y-%m-%d" ) = "${today}" AND isDue = 0`;
     db.query(sql, (err,rus)=>{
       var totalToday = rus[0].total;
       res.render("payments/today", {
@@ -53,7 +53,7 @@ route.get("/thisMonth", ensureAuthenticateds, (req, res) => {
   var monthNumber = d.getMonth() + 1;
   var monthName = month[d.getMonth()];
 
-  let sql = `SELECT * FROM all_payment WHERE month(datePaid) = "${monthNumber}" ORDER BY id DESC`;
+  let sql = `SELECT * FROM all_payment WHERE month(datePaid) = "${monthNumber}" AND isDue = 0 ORDER BY id DESC`;
   db.query(sql, (err, results) => {
     res.render("payments/thisMonth", {
       user: req.user,
@@ -67,7 +67,7 @@ route.get('/thisYear', ensureAuthenticateds, (req,res)=>{
     var d = new Date();
     var year = d.getFullYear();
 
-    let sql = `SELECT * FROM all_payment WHERE year(datePaid) = "${year}" ORDER BY id DESC`;
+    let sql = `SELECT * FROM all_payment WHERE year(datePaid) = "${year}" AND isDue = 0 ORDER BY id DESC`;
     db.query(sql, (err,results)=>{
         res.render('payments/thisYear', {
             user : req.user,
@@ -78,15 +78,15 @@ route.get('/thisYear', ensureAuthenticateds, (req,res)=>{
     
 });
 
-route.get('/offline', ensureAuthenticateds, (req,res)=>{
-  let sql = `SELECT * FROM offline_payment ORDER BY id DESC`;
-  db.query(sql, (err,results)=>{
-    res.render('payments/offline', {
-      user : req.user,
-      results : results
-    })
-  });
-});
+// route.get('/offline', ensureAuthenticateds, (req,res)=>{
+//   let sql = `SELECT * FROM offline_payment ORDER BY id DESC`;
+//   db.query(sql, (err,results)=>{
+//     res.render('payments/offline', {
+//       user : req.user,
+//       results : results
+//     })
+//   });
+// });
 
 route.post('/today/delete', ensureAuthenticateds, (req,res)=>{
 var pid = req.body.pid;
