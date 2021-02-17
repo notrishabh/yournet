@@ -75,10 +75,12 @@
                       <th>Mobile</th>
                       <th>User Id</th>
                       <th>Amount</th>
-                      <th>Mode</th>
-                      <th>Payment Date</th>
-                      <th>Expiry Date</th>
+                      <th>Billing Date</th>
+                      <th>Start Date</th>
                       <th>Validity</th>
+                      <th>Mode</th>
+                      <!-- <th>Payment Date</th>
+                      <th>Expiry Date</th> -->
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -90,10 +92,12 @@
                       <th>Mobile</th>
                       <th>User Id</th>
                       <th>Amount</th>
-                      <th>Mode</th>
-                      <th>Payment Date</th>
-                      <th>Expiry Date</th>
+                      <th>Billing Date</th>
+                      <th>Start Date</th>
                       <th>Validity</th>
+                      <th>Mode</th>
+                      <!-- <th>Payment Date</th>
+                      <th>Expiry Date</th> -->
                       <th>Delete</th>
                     </tr>
                   </tfoot>
@@ -101,7 +105,8 @@
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
                         var date = results[i].datePaid.toString().split("GMT");
-                        var dateExpiry = results[i].dateExpiry.toString().split("GMT");
+                        <!-- var dateExpiry = results[i].dateExpiry.toString().split("GMT"); -->
+                        var billingDate = results[i].dateStart.toString().split("GMT");
                         %>
 
                         <tr>
@@ -111,10 +116,10 @@
                           <td><%= results[i].Mobile %></td>
                           <td><%= results[i].Stb %></td>
                           <td><%= results[i].Amount %></td>
-                          <td><%= results[i].Mode %></td>
+                          <td><%= billingDate[0] %></td>
                           <td><%= date[0] %></td>
-                          <td><%= dateExpiry[0] %></td>
                           <td><%= results[i].validity %></td>
+                          <td><%= results[i].Mode %></td>
                           <td>
                             <form action="/adminPanel/payments/today/delete" method="POST">
                               <div>
