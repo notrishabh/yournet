@@ -207,7 +207,11 @@ route.post('/all/pay',ensureAuthenticateds,(req,res)=>{
   }else{
     paymentDue = 1;
   }
+  var paymentDate = req.body.paymentDate;
 
+
+  var partspay =paymentDate.split('-');
+  var paydate = new Date(partspay[0], partspay[1] - 1, partspay[2]); 
 
   var parts =startDate.split('-');
   var mydate = new Date(parts[0], parts[1] - 1, parts[2]); 
@@ -277,6 +281,7 @@ route.post('/all/pay',ensureAuthenticateds,(req,res)=>{
         isDue : paymentDue,
         validity : duration,
         speed : speed,
+        datePaid : paydate,
         dateStart : mydate,
         dateExpiry : dateExpiry
     };
@@ -328,10 +333,11 @@ route.post('/all/due',ensureAuthenticateds,(req,res)=>{
   duration = parseInt(duration);
   var totalBalance = req.body.totalBalance;
   var startDate = req.body.startDate;
+  var paymentDate = req.body.paymentDate;
 
 
-  // var parts =startDate.split('-');
-  // var mydate = new Date(parts[0], parts[1] - 1, parts[2]); 
+  var parts =paymentDate.split('-');
+  var mydate = new Date(parts[0], parts[1] - 1, parts[2]); 
   // var vardate = new Date(parts[0], parts[1] - 1, parts[2]); 
 
 
@@ -392,6 +398,7 @@ route.post('/all/due',ensureAuthenticateds,(req,res)=>{
         Amount : totalAmount,
         isDue : 0,
         speed : speed,
+        datePaid : mydate,
     };
     db.query(all_payment, all_values, (err,allpays)=>{
 
@@ -446,6 +453,12 @@ route.post('/:brand/:region_id/pay',ensureAuthenticateds,(req,res)=>{
     }else{
       paymentDue = 1;
     }
+    var paymentDate = req.body.paymentDate;
+
+
+    var partspay =paymentDate.split('-');
+    var paydate = new Date(partspay[0], partspay[1] - 1, partspay[2]); 
+  
 
 
     var parts =startDate.split('-');
@@ -513,6 +526,7 @@ route.post('/:brand/:region_id/pay',ensureAuthenticateds,(req,res)=>{
           isDue : paymentDue,
           validity : duration,
           speed : speed,
+          datePaid : paydate,
           dateStart : mydate,
           dateExpiry : dateExpiry
       };
@@ -567,10 +581,12 @@ route.post('/:brand/:region_id/pay',ensureAuthenticateds,(req,res)=>{
     duration = parseInt(duration);
     var totalBalance = req.body.totalBalance;
     var startDate = req.body.startDate;
+    var paymentDate = req.body.paymentDate;
   
   
-    // var parts =startDate.split('-');
-    // var mydate = new Date(parts[0], parts[1] - 1, parts[2]); 
+    var parts =paymentDate.split('-');
+    var mydate = new Date(parts[0], parts[1] - 1, parts[2]); 
+  
     // var vardate = new Date(parts[0], parts[1] - 1, parts[2]); 
   
   
@@ -631,6 +647,7 @@ route.post('/:brand/:region_id/pay',ensureAuthenticateds,(req,res)=>{
           Amount : totalAmount,
           isDue : 0,
           speed : speed,
+          datePaid : mydate,
       };
       db.query(all_payment, all_values, (err,allpays)=>{
   

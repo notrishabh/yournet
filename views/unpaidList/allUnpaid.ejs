@@ -36,6 +36,15 @@
          bf.disabled = true;
        }
       }
+      function paymentDuefunc(){
+          document.getElementById("paymentDue").value = 1;
+          var pd = document.getElementById("paymentDatediv");
+          if(pd.style.display != "none"){
+            pd.style.display = "none";
+          }else{
+            pd.style.display = "inline";
+          }
+      }
     </script>
     
     <style>
@@ -150,25 +159,22 @@
                             
                                 </select>                        
                               </div>  
+                              
+                              
+                            </div>
+                            <div class="form-row mb-3 align-items-center">
                               <div class="col-md-3">
                                 <label class="form-check-label" for="startDate" >Start Date</label>
                                 <input type="date" name="startDate" max="3000-12-31" 
                                        min="1000-01-01" class="form-control" id="startDate">
                               </div>
-                              
+                              <div class="col-md-3" id="paymentDatediv">
+                                <label class="form-check-label" for="paymentDate" >Payment Date</label>
+                                <input type="date" name="paymentDate" max="3000-12-31" 
+                                       min="1000-01-01" class="form-control" id="paymentDate">
+                              </div>
                             </div>
                             
-                            
-<!--                        
-                          <div class="form-check mb-3">
-                            <div class="form-row align-items-center">
-                              <div class="col-4">
-                                <input type="radio" name="balanceRadio" id="customRadio" class="form-check-input" onclick=balanceFields()>
-                                <label class="form-check-label" for="balanceRadio" >Balance</label>
-                                <input type="number" class="ml-4" name="balanceField" id="balanceField"  disabled required /> 
-                              </div> 
-                            </div>
-                          </div> -->
                           <div class="row mb-3 align-items-center">
                             <div class="form-check mb-3">
                               <div class="col">
@@ -184,7 +190,7 @@
                           </div>
               
                           <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="0" name="paymentDue" id="paymentDue" onclick='document.getElementById("paymentDue").value = 1;'>
+                            <input class="form-check-input" type="checkbox" value="0" name="paymentDue" id="paymentDue" onclick=paymentDuefunc()>
                             <label class="form-check-label" for="paymentDue">
                               Payment Due
                             </label>
@@ -195,6 +201,9 @@
                         </form>  
                           </div>    
                       </div>
+
+
+
                 <div class="container-fluid mb-4" id="dueForm" style="display: none;">
                   <div class="card shadow">
                       <h5 class="card-header">Payment due Form</h5>
@@ -254,11 +263,11 @@
                             
                                 </select>                        
                               </div>  
-                              <!-- <div class="col-md-3">
-                                <label class="form-check-label" for="startDate" >Start Date</label>
-                                <input type="date" name="startDate" max="3000-12-31" 
-                                       min="1000-01-01" class="form-control" id="startDate">
-                              </div> -->
+                              <div class="col-md-3">
+                                <label class="form-check-label" for="paymentDatedue" >Payment Date</label>
+                                <input type="date" name="paymentDate" max="3000-12-31" 
+                                       min="1000-01-01" class="form-control" id="paymentDatedue">
+                              </div>
                               
                             </div>
                             
@@ -445,8 +454,11 @@
                 var date1 = new Date();
                 myDate.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
 
-                // var midnightUtcDate = myDate.valueAsDate;
-                // var date2 = new Date(midnightUtcDate.getUTCFullYear(), midnightUtcDate.getUTCMonth(), midnightUtcDate.getUTCDate());
+                var paymentDate = document.getElementById("paymentDate");
+                paymentDate.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+                var paymentDatedue = document.getElementById("paymentDatedue");
+                paymentDatedue.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+
                           
             </script>
 
