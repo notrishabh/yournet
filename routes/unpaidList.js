@@ -152,6 +152,21 @@ route.get('/all', ensureAuthenticateds,(req,res)=>{
       });
   });
 });
+route.get('/all/paymentDuePage', ensureAuthenticateds,(req,res)=>{
+  let sql = `SELECT brand.brand_name, brand.id, infos.brand_id, infos.cid, infos.status ,infos.Name ,infos.Address ,infos.Mobile ,infos.Stb ,infos.validity ,infos.speed ,infos.isDue, infos.dateExpiry, infos.balance, infos.lastAmountId, all_payment.Amount AS PrevAmount, all_payment.id FROM infos,brand,all_payment WHERE (infos.brand_id = brand.id) AND infos.lastAmountId = all_payment.id AND infos.isDue = 1 AND infos.suspended = 0`;
+  db.query(sql, (err,results)=>{
+    if(err){
+      res.send(err)
+    }
+
+
+      res.render('unpaidList/allUnpaid', {
+          user : req.user,
+          results : results,
+          success
+      });
+  });
+});
 
 route.get("/:brand/regionList",ensureAuthenticateds,(req,res)=>{
   var brand = req.params.brand;
@@ -182,12 +197,47 @@ route.get('/:brand/:region_id',ensureAuthenticateds, (req,res)=>{
       if(err){
         res.send(err)
       }
+      if(results.length > 0){
+        title = results[0].region_name;
+      }else{
+        title = "";
+      }
+
+
 
         res.render('unpaidList/allRegions', {
             user : req.user,
             results : results,
             region_id : region_id,
             brand: brand,
+            title:title,
+            success
+        });
+    });
+});
+route.get('/:brand/:region_id/paymentDuePage',ensureAuthenticateds, (req,res)=>{
+    var region_id = req.params.region_id;
+    var brand = req.params.brand;
+
+    let sql = `SELECT region.region_name,infos.cid,infos.status,infos.Name,infos.Address,infos.Mobile,infos.Stb,infos.validity,infos.speed,infos.isDue, infos.dateExpiry,infos.lastAmountId,all_payment.Amount AS PrevAmount,all_payment.id,infos.balance FROM infos, region, all_payment WHERE infos.region_id = region.id AND infos.region_id = ${region_id} AND brand_id = ${brand} AND infos.lastAmountId = all_payment.id AND infos.isDue = 1 AND infos.suspended = 0`;
+
+    db.query(sql, (err,results)=>{
+      if(err){
+        res.send(err)
+      }
+      if(results.length > 0){
+        title = results[0].region_name;
+      }else{
+        title = "";
+      }
+
+
+        res.render('unpaidList/allRegions', {
+            user : req.user,
+            results : results,
+            region_id : region_id,
+            brand: brand,
+            title: title,
             success
         });
     });

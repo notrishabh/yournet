@@ -90,9 +90,19 @@
 
                 <div class="container-fluid">
                   <div class="row align-items-center">
-                    <div class="col-md-4">
+                    <div class="col-md-1">
                       <div class="row align-items-center">
                         <a href="/adminPanel/unpaidList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-filter"></i> Filter
+                      </a>
+                    
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/adminPanel/unpaidList/all/paymentDuePage">Payment Due</a>
+                        <a class="dropdown-item" href="/adminPanel/unpaidList/all">All unpaid</a>
                       </div>
                     </div>
                     <div class="col-md-4 offset-md-4">

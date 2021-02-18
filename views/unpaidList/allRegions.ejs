@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Unpaid List (<%=results[0].region_name%>)</title>
+    <title>Unpaid List (<%=title%>)</title>
     <link rel="icon" href="/wicon.jpg" type="image/x-icon">
 
 
@@ -79,7 +79,7 @@
 
             <!-- Main Content -->
             <div id="content">
-              <%- include('../partials/topbar', {heading: `Unpaid List (${results[0].region_name})`}); %>
+              <%- include('../partials/topbar', {heading: `Unpaid List (${title})`}); %>
 
               <!-- End of Topbar -->
       
@@ -90,9 +90,19 @@
 
                 <div class="container-fluid">
                   <div class="row align-items-center">
-                    <div class="col-md-4">
+                    <div class="col-md-1">
                       <div class="row align-items-center">
                         <a href="/adminPanel/unpaidList/<%=brand%>/regionList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-filter"></i> Filter
+                      </a>
+                    
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/adminPanel/unpaidList/<%=brand%>/<%=region_id%>/paymentDuePage">Payment Due</a>
+                        <a class="dropdown-item" href="/adminPanel/unpaidList/<%=brand%>/<%=region_id%>">All unpaid</a>
                       </div>
                     </div>
                     <div class="col-md-4 offset-md-4">
