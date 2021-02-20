@@ -87,7 +87,7 @@
                   <tbody>
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
-                        var date = results[i].datePaid.toString().split("GMT");
+                        var date = results[i].datePaid.toString().split("00:00:00");
                         %>
 
                         <tr>

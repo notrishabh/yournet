@@ -324,6 +324,7 @@
                       <th>Amount</th>
                       <th>Validity</th>
                       <th>Speed</th>
+                      <th>Billing Date</th>
                       <th>Pay</th>
                     </tr>
                   </thead>
@@ -337,6 +338,7 @@
                       <th>Amount</th>
                       <th>Validity</th>
                       <th>Speed</th>
+                      <th>Billing Date</th>
                       <th>Pay</th>
                     </tr>
                   </tfoot>
@@ -369,6 +371,7 @@
                         if(results[i].isDue == 1){
                           styler="darkgreen";
                         }
+                        var billingDate = results[i].datePaid.toString().split("00:00:00");
                         %>
 
                         <tr style="color:<%=styler%>;">
@@ -380,6 +383,7 @@
                           <td><%= totalBalance %></td>
                           <td><%= results[i].validity %></td>
                           <td><%= results[i].speed %></td>
+                          <td><%= billingDate[0] %></td>
                           <%if(results[i].isDue == 0){ %>
                             <td>
                               <button class="btn btn-primary" style="display: <%=bton%>;"
@@ -456,7 +460,10 @@
             <script src="/scripts/datatables.js"></script>
             <script>
               $('#dataTable').dataTable({
-                "ordering" : false
+                "ordering" : false,
+                "columnDefs": [
+                  { "width": "10%", "targets": 8 },
+                ]
               });
 
               

@@ -134,7 +134,7 @@ db.query(firstsql, (err,results)=>{
           res.redirect("/adminPanel/payments/today");
         }
       });
-      let lolsql = `SELECT * FROM all_payment WHERE Stb = "${stb}" ORDER by id DESC LIMIT 1`
+      let lolsql = `SELECT * FROM all_payment WHERE Stb = "${stb}" ORDER by id DESC LIMIT 1`;
       db.query(lolsql, (err,lols)=>{
         let values = {};
         let infosql = `UPDATE infos SET ? WHERE Stb = "${stb}"`;
@@ -144,11 +144,17 @@ db.query(firstsql, (err,results)=>{
         if(lols.length > 0){
           values['dateExpiry'] = lols[0].dateExpiry;
           values['datePaid'] = lols[0].dateStart;
-      }else{
-        values['dateExpiry'] = 0;
-        values['datePaid'] = 0;
-    
-      }
+          values['lastAmountId'] = lols[0].id;
+          values['validity'] = lols[0].validity;
+          values['speed'] = lols[0].speed;
+        }else{
+          values['dateExpiry'] = 0;
+          values['datePaid'] = 0;
+          values['lastAmountId'] = 0;
+          values['validity'] = 0;
+          values['speed'] = 0;
+      
+        }
         db.query(infosql, values, (err,boi)=>{
         });
       });

@@ -104,9 +104,9 @@
                   <tbody>
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
-                        var date = results[i].datePaid.toString().split("GMT");
+                        var date = results[i].datePaid.toString().split("00:00:00");
                         <!-- var dateExpiry = results[i].dateExpiry.toString().split("GMT"); -->
-                        var billingDate = results[i].dateStart.toString().split("GMT");
+                        var billingDate = results[i].dateStart.toString().split("00:00:00");
                         %>
 
                         <tr>
