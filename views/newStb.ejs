@@ -29,6 +29,13 @@
       href="/vendor/datatables/dataTables.bootstrap4.min.css"
       rel="stylesheet"
     />
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    </style>
   </head>
 
   <body id="page-top">
@@ -97,6 +104,31 @@
                             </div>
                             <div class="col-10">
                               <input type="text" class="form-control" id="stb" name="stb" placeholder="User ID" required>
+                            </div>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="devName">Device</label>
+                            <div class="row">
+                              <div class="col-2">
+                                <select class="form-control" name="devName">
+                                    <option value="NA">Select Device</option>
+                                    <option value="ONT">ONT</option>
+                                    <option value="ONU">ONU</option>
+                                    <option value="Router">Router</option>
+                                    <option value="ONU + Router">ONU + Router</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                              <input type="number" class="form-control" id="device" name="devPrice" placeholder="Device Charges">
+                            </div>
+                            <div class="col-3">
+                              <select class="form-control" name="sos">
+                                  <option value="NA">Select Sold or Security</option>
+                                  <option value="Sold">Sold</option>
+                                  <option value="Security">Security</option>
+                              </select>
                             </div>
                             </div>
                             

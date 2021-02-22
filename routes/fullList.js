@@ -62,8 +62,8 @@ route.get('/all',ensureAuthenticateds, (req,res)=>{
     var monthName = month[d.getMonth()];
     let sqll = `SELECT * FROM region`;
     db.query(sqll, (err,regionList)=>{
-        let sql = `SELECT region.region_name,infos.cid,infos.Name,infos.Address,infos.Mobile,infos.Stb,infos.validity,infos.speed,infos.${monthName} AS Amount,infos.datePaid,infos.dateExpiry 
-        FROM infos INNER JOIN region ON infos.region_id = region.id AND infos.suspended = 0`;
+        let sql = `SELECT region.region_name,infos.cid,infos.Name,infos.Address,infos.Mobile,infos.Stb,infos.validity,infos.speed,infos.devName,infos.devPrice,infos.sos,infos.${monthName} AS Amount,infos.datePaid,infos.dateExpiry,brand.brand_name,infos.brand_id
+        FROM infos, region, brand WHERE infos.region_id = region.id AND infos.brand_id = brand.id AND infos.suspended = 0`;
         db.query(sql, (err,results)=>{
             let sql = `SELECT * FROM brand`;
             db.query(sql, (err,brandList)=>{
@@ -368,8 +368,9 @@ route.get('/:brand/:region_id',ensureAuthenticateds, (req,res)=>{
     var monthName = month[d.getMonth()];
     let sqll = `SELECT * FROM region`;
     db.query(sqll, (err,regionList)=>{
-        let sql = `SELECT region.region_name,infos.cid,infos.Name,infos.Address,infos.Mobile,infos.Stb,infos.validity,infos.speed,infos.${monthName} AS Amount,infos.datePaid,infos.dateExpiry 
-        FROM infos INNER JOIN region ON infos.region_id = region.id AND infos.region_id = ${region_id} AND brand_id = ${brand} AND infos.suspended = 0`;
+        let sql = `SELECT region.region_name,infos.cid,infos.Name,infos.Address,infos.Mobile,infos.Stb,infos.validity,infos.speed,infos.devName,infos.devPrice,infos.sos,infos.${monthName} AS Amount,infos.datePaid,infos.dateExpiry,brand.brand_name,infos.brand_id
+        FROM infos, region, brand WHERE infos.region_id = region.id AND infos.region_id = ${region_id} AND brand_id = ${brand} AND infos.brand_id = brand.id AND infos.suspended = 0`;
+
         db.query(sql, (err,results)=>{
             let sql = `SELECT * FROM brand`;
             db.query(sql, (err,brandList)=>{
