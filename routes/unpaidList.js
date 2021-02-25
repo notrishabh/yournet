@@ -55,8 +55,9 @@ route.get('/all/download', ensureAuthenticateds,(req,res)=>{
       { header: 'Stb', key: 'Stb', width: 15},
       { header: 'Mobile', key: 'Mobile', width: 15 },
       { header: 'Amount', key: 'Amount', width: 10 },
+      { header: 'Validity', key: 'validity', width: 10 },
   ];
-  let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE suspended = 0 AND status = 0`;
+  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND suspended = 0 AND status = 0`;
   db.query(sql, (err,results)=>{
       results.forEach((result)=>{
           var data = JSON.parse(JSON.stringify(result));
@@ -110,8 +111,11 @@ route.get('/:brand/download', ensureAuthenticateds,(req,res)=>{
       { header: 'Stb', key: 'Stb', width: 15},
       { header: 'Mobile', key: 'Mobile', width: 15 },
       { header: 'Amount', key: 'Amount', width: 10 },
+      { header: 'Validity', key: 'validity', width: 10 },
   ];
-  let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE brand_id = "${brand}" AND suspended = 0 AND status = 0`;
+
+  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND brand_id = "${brand}" AND suspended = 0 AND status = 0`;
+
   db.query(sql, (err,results)=>{
       results.forEach((result)=>{
           var data = JSON.parse(JSON.stringify(result));
@@ -770,8 +774,10 @@ route.get('/:brand/:region/download', ensureAuthenticateds,(req,res)=>{
         { header: 'Stb', key: 'Stb', width: 15},
         { header: 'Mobile', key: 'Mobile', width: 15 },
         { header: 'Amount', key: 'Amount', width: 10 },
+        { header: 'Validity', key: 'validity', width: 10 },
     ];
-    let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE region_id = "${region}" AND brand_id = ${brand} AND status = 0 AND suspended = 0`;
+    let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND region_id = "${region}" AND brand_id = ${brand} AND suspended = 0 AND status = 0`;
+
     db.query(sql, (err,results)=>{
         results.forEach((result)=>{
             var data = JSON.parse(JSON.stringify(result));
