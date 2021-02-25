@@ -72,6 +72,7 @@
                       <th>Recieving Date</th>
                       <th>Validity</th>
                       <th>Mode</th>
+                      <th>Delete</th>
                       <!-- <th>Expiry Date</th> -->
                     </tr>
                   </thead>
@@ -87,6 +88,7 @@
                       <th>Recieving Date</th>
                       <th>Validity</th>
                       <th>Mode</th>
+                      <th>Delete</th>
                       <!-- <th>Expiry Date</th> -->
                     </tr>
                   </tfoot>
@@ -109,6 +111,15 @@
                           <td><%= date[0] %></td>
                           <td><%= results[i].validity %></td>
                           <td><%= results[i].Mode %></td>
+                          <td>
+                            <form action="/adminPanel/payments/thismonth/delete" method="POST">
+                              <div>
+                                <input type="hidden" name="pid" value="<%= results[i].id %>">
+                                <input type="hidden" name="stb" value="<%= results[i].Stb %>">
+                                <button class="btn btn-primary" onclick=removeBtn() id="remBtn"><i class="fas fa-trash"></i></button>
+                              </div>
+                            </form>
+                          </td>
                         </tr>
                     <% } 
                   }else{ %>
@@ -143,6 +154,16 @@
 
             <!-- Page level custom scripts -->
             <script src="/scripts/datatables.js"></script>
+            <script>
+              function removeBtn(){
+                    var r = confirm("Are you sure you want to remove the payment record? IF THERE IS BALANCE DONT DELETE");
+                    if(r==true){
+                        document.getElementById('remBtn').type = "submit";
+                    }else{
+                        document.getElementById('remBtn').type = "reset";
+                    }
+                }
+            </script>
 
 
  </body>
