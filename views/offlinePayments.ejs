@@ -35,7 +35,21 @@
         document.getElementById('customField').disabled = false;
       }
       function balanceFields(){
-        document.getElementById('balanceField').disabled = false;
+       var bf =  document.getElementById('balanceField');
+       if(bf.disabled){
+         bf.disabled = false;
+       }else{
+         bf.disabled = true;
+       }
+      }
+      function paymentDuefunc(){
+          document.getElementById("paymentDue").value = 1;
+          var pd = document.getElementById("paymentDatediv");
+          if(pd.style.display != "none"){
+            pd.style.display = "none";
+          }else{
+            pd.style.display = "inline";
+          }
       }
       
     </script>
@@ -201,17 +215,29 @@
                       
                           </select>                        
                         </div>  
+                          <!-- <div class="col-md-3">
+                            <label class="form-check-label" for="startDate" >Start Date</label>
+                            <input type="date" name="startDate" max="3000-12-31" 
+                                   min="1000-01-01" class="form-control" id="startDate">
+                          </div> -->
+                          
+                        </div>
+                        <div class="form-row mb-3 align-items-center">
                           <div class="col-md-3">
                             <label class="form-check-label" for="startDate" >Start Date</label>
                             <input type="date" name="startDate" max="3000-12-31" 
                                    min="1000-01-01" class="form-control" id="startDate">
                           </div>
-                          
+                          <div class="col-md-3" id="paymentDatediv">
+                            <label class="form-check-label" for="paymentDate" >Payment Date</label>
+                            <input type="date" name="paymentDate" max="3000-12-31" 
+                                   min="1000-01-01" class="form-control" id="paymentDate">
+                          </div>
                         </div>
                         
                         
                    
-                      <div class="form-check mb-3">
+                      <!-- <div class="form-check mb-3">
                         <div class="form-row align-items-center">
                           <div class="col-4">
                             <input type="radio" name="balanceRadio" id="customRadio" class="form-check-input" onclick=balanceFields()>
@@ -219,6 +245,25 @@
                             <input type="number" class="ml-4" name="balanceField" id="balanceField"  disabled required /> 
                           </div> 
                         </div>
+                      </div> -->
+                      <div class="row mb-3 align-items-center">
+                        <div class="form-check mb-3">
+                          <div class="col">
+
+                            <input class="form-check-input" type="checkbox" value="" id="customRadio" onclick=balanceFields()>
+                            <label class="form-check-label" for="customRadio" >Balance</label>
+                          </div>
+                        </div>
+                            <div class="col-3">
+                              <input type="number" class="form-control" name="balanceField" id="balanceField"  disabled required /> 
+                            </div>
+                        
+                      </div>
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="0" name="paymentDue" id="paymentDue" onclick=paymentDuefunc()>
+                        <label class="form-check-label" for="paymentDue">
+                          Payment Due
+                        </label>
                       </div>
                       
                         <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Pay</button>
@@ -244,10 +289,14 @@
 
     <!-- Page level custom scripts -->
     <script>
-      var myDate = document.getElementById("startDate");
-      var date1 = new Date();
-      myDate.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+                var myDate = document.getElementById("startDate");
+                var date1 = new Date();
+                myDate.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
 
+                var paymentDate = document.getElementById("paymentDate");
+                paymentDate.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+                var paymentDatedue = document.getElementById("paymentDatedue");
+                paymentDatedue.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
     </script>
    
   </body>

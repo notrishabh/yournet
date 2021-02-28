@@ -318,9 +318,9 @@ route.post('/all/pay',ensureAuthenticateds,(req,res)=>{
     var monthName = month[d.getMonth()];
     var dateExpiry = vardate;
 
-    dateExpiry.setDate(dateExpiry.getDate() + (30 * duration));
+    // dateExpiry.setDate(dateExpiry.getDate() + (30 * duration));
+    dateExpiry.setMonth(dateExpiry.getMonth() + duration);
     
-
 
 
 
@@ -566,7 +566,8 @@ route.post('/:brand/:region_id/pay',ensureAuthenticateds,(req,res)=>{
       var monthName = month[d.getMonth()];
       var dateExpiry = vardate;
 
-      dateExpiry.setDate(dateExpiry.getDate() + (30 * duration));
+      // dateExpiry.setDate(dateExpiry.getDate() + (30 * duration));
+      dateExpiry.setMonth(dateExpiry.getMonth() + duration);
       
       
       let all_payment = `INSERT INTO all_payment SET ?`;
