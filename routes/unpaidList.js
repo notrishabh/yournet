@@ -56,10 +56,12 @@ route.get('/all/download', ensureAuthenticateds,(req,res)=>{
       { header: 'Mobile', key: 'Mobile', width: 15 },
       { header: 'Amount', key: 'Amount', width: 10 },
       { header: 'Validity', key: 'validity', width: 10 },
+      { header: 'Billing Date', key: 'datePaid', width: 15 },
   ];
-  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND suspended = 0 AND status = 0`;
+  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, infos.datePaid, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND suspended = 0 AND status = 0`;
   db.query(sql, (err,results)=>{
       results.forEach((result)=>{
+          result.datePaid = result.datePaid.toString().split("00:00:00")[0];
           var data = JSON.parse(JSON.stringify(result));
           worksheet.addRow(data);
       });
@@ -112,12 +114,14 @@ route.get('/:brand/download', ensureAuthenticateds,(req,res)=>{
       { header: 'Mobile', key: 'Mobile', width: 15 },
       { header: 'Amount', key: 'Amount', width: 10 },
       { header: 'Validity', key: 'validity', width: 10 },
+      { header: 'Billind Date', key: 'datePaid', width: 10 },
   ];
 
-  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND brand_id = "${brand}" AND suspended = 0 AND status = 0`;
+  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity,infos.datePaid, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND brand_id = "${brand}" AND suspended = 0 AND status = 0`;
 
   db.query(sql, (err,results)=>{
       results.forEach((result)=>{
+          result.datePaid = result.datePaid.toString().split("00:00:00")[0];
           var data = JSON.parse(JSON.stringify(result));
           worksheet.addRow(data);
       });
@@ -776,11 +780,13 @@ route.get('/:brand/:region/download', ensureAuthenticateds,(req,res)=>{
         { header: 'Mobile', key: 'Mobile', width: 15 },
         { header: 'Amount', key: 'Amount', width: 10 },
         { header: 'Validity', key: 'validity', width: 10 },
+        { header: 'Billing Date', key: 'datePaid', width: 20 },
     ];
-    let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND region_id = "${region}" AND brand_id = ${brand} AND suspended = 0 AND status = 0`;
+    let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, infos.datePaid, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND region_id = "${region}" AND brand_id = ${brand} AND suspended = 0 AND status = 0`;
 
     db.query(sql, (err,results)=>{
         results.forEach((result)=>{
+            result.datePaid = result.datePaid.toString().split("00:00:00")[0];
             var data = JSON.parse(JSON.stringify(result));
             worksheet.addRow(data);
         });
