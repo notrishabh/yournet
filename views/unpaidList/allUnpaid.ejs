@@ -44,6 +44,12 @@
           }else{
             pd.style.display = "inline";
           }
+          var bf =  document.getElementById('balanceFieldCol');
+          if(bf.style.visibility != "hidden"){
+            bf.style.visibility = "hidden";
+          }else{
+            bf.style.visibility = "visible";
+          }
       }
     </script>
     
@@ -185,7 +191,7 @@
                               </div>
                             </div>
                             
-                          <div class="row mb-3 align-items-center">
+                          <div class="row mb-3 align-items-center" id = "balanceFieldCol">
                             <div class="form-check mb-3">
                               <div class="col">
 
@@ -351,7 +357,7 @@
                         var bton = "inline";
                         var vali = 1;
                         var spee = 25;
-                        if(results[i].balance != 0 && results[i].isDue == 0){
+                        if(results[i].balance != 0){
                           if(results[i].dateExpiry > d){
                             totalBalance = results[i].balance;
                             styler="red";
@@ -368,7 +374,7 @@
                         if(results[i].speed != 0){
                           spee = results[i].speed;
                         }
-                        if(results[i].isDue == 1){
+                        if(results[i].isDue >= 1){
                           styler="darkgreen";
                         }
                         var billingDate = results[i].datePaid.toString().split("00:00:00");
@@ -384,7 +390,6 @@
                           <td><%= results[i].validity %></td>
                           <td><%= results[i].speed %></td>
                           <td><%= billingDate[0] %></td>
-                          <%if(results[i].isDue == 0){ %>
                             <td>
                               <button class="btn btn-primary" style="display: <%=bton%>;"
                               onclick="document.getElementById('payForm').style.display = 'block'; 
@@ -402,27 +407,7 @@
                               document.getElementById('stbDisp').value = `<%= results[i].Stb %>`;"
                               ><i class="fas fa-money-bill-wave"></i></button>
                             </td>
-                          <%} else{ %>
-                              <td>
-                               
-                                  <button class="btn btn-success" style="display: <%=bton%>;"
-                                  onclick="document.getElementById('dueForm').style.display = 'block'; 
-                                  document.getElementById('Stbdue').value = `<%=results[i].Stb%>`;
-                                  document.getElementById('ciddue').value = `<%=results[i].cid%>`;
-                                  document.getElementById('customFielddue').value = `<%= totalBalance %>`;
-                                  document.getElementById('totalBalancedue').value = `<%= totalBalance %>`;
-                                  document.getElementById('amountIddue').value = `<%= results[i].lastAmountId %>`;
-                                  document.getElementById('namedue').value = `<%= results[i].Name %>`;
-                                  document.getElementById('addressdue').value = `<%= results[i].Address %>`;
-                                  document.getElementById('mobiledue').value = `<%= results[i].Mobile %>`;
-                                  document.getElementById('default_validitydue').value = `<%= vali %> Months`;
-                                  document.getElementById('default_speeddue').value = `<%= spee %>`;
-                                  document.getElementById('default_speeddue').innerHTML = `<%= spee %> Mbps`;
-                                  document.getElementById('stbDispdue').value = `<%= results[i].Stb %>`;"
-                                  ><i class="fas fa-check-double"></i></button>
-
-                              </td>
-                          <%}%>
+                        
                         </tr>
 
                     <% } 

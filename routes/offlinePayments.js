@@ -103,58 +103,151 @@ route.post('/savePayment',ensureAuthenticateds,(req,res)=>{
     // dateExpiry.setDate(dateExpiry.getDate() + (30 * duration));
     dateExpiry.setMonth(dateExpiry.getMonth() + duration);
 
-    
-    let all_payment = `INSERT INTO all_payment SET ?`;
-    let all_values = {
-        Name : results[0].Name,
-        Address : results[0].Address,
-        Mobile : results[0].Mobile,
-        Stb : results[0].Stb,
-        Amount : totalAmount,
-        Mode : 'Offline',
-        isDue : paymentDue,
-        validity : duration,
-        speed : speed,
-        datePaid : paydate,
-        dateStart : mydate,
-        dateExpiry : dateExpiry
+    let billing = `INSERT INTO billing SET ?`;
+    let bill_values = {
+      Name : results[0].Name,
+      Address : results[0].Address,
+      Mobile : results[0].Mobile,
+      Stb : results[0].Stb,
+      Amount : totalAmount,
+      isDue : paymentDue,
+      validity : duration,
+      speed : speed,
+      datePaid : paydate,
+      dateStart : mydate,
+      dateExpiry : dateExpiry
     };
-    db.query(all_payment, all_values, (err,allpays)=>{
+    db.query(billing, bill_values, (err,billers)=>{
+      if(paymentDue == 0){
+        let all_payment = `INSERT INTO all_payment SET ?`;
+        let all_values = {
+            Name : results[0].Name,
+            Address : results[0].Address,
+            Mobile : results[0].Mobile,
+            Stb : results[0].Stb,
+            Amount : totalAmount,
+            Mode : 'Offline',
+            isDue : paymentDue,
+            validity : duration,
+            speed : speed,
+            datePaid : paydate,
+            dateStart : mydate,
+            dateExpiry : dateExpiry
+        };
+        db.query(all_payment, all_values, (err,allpays)=>{
 
-      let listPay = `UPDATE infos SET ? WHERE cid = "${results[0].cid}"`;
-      let listValues = {};
-      for(var i =0; i<duration; i++){
-          listValues[month[mydate.getMonth() + i]] = amount/duration;
-      }
-      listValues['dateExpiry'] = dateExpiry;
-      listValues['datepaid'] = mydate;
-  
-      if(balance > 0){
-        listValues['status'] = 2;
-        listValues['balance'] = balance;
-      }else{
-        listValues['status'] = 1;
-        listValues['balance'] = 0;
-      }
-      if(paymentDue == 1 && balance == 0){
-        listValues['status'] = 0;
-      }
-      listValues['validity'] = duration;
-      listValues['speed'] = speed;
-      listValues['isDue'] = paymentDue;
-      listValues['lastAmountId'] = allpays.insertId;
-      db.query(listPay,listValues, (err,results)=>{
-        if(err){
-          console.log(err);
-        }
-        req.session.save(function(err){
-            req.flash('success_msg', 'Paid Successfully!');
-            res.redirect('/adminPanel/offlinePayments');
-  
+          let listPay = `UPDATE infos SET ? WHERE cid = "${results[0].cid}"`;
+          let listValues = {};
+          for(var i =0; i<duration; i++){
+              listValues[month[mydate.getMonth() + i]] = amount/duration;
+          }
+          listValues['dateExpiry'] = dateExpiry;
+          listValues['datepaid'] = mydate;
+      
+          if(balance > 0){
+            listValues['status'] = 2;
+            listValues['balance'] = balance;
+          }else{
+            listValues['status'] = 1;
+            listValues['balance'] = 0;
+          }
+          if(paymentDue == 1 && balance == 0){
+            listValues['status'] = 0;
+          }
+          listValues['validity'] = duration;
+          listValues['speed'] = speed;
+          // listValues['isDue'] = paymentDue;
+          listValues['lastAmountId'] = allpays.insertId;
+          db.query(listPay,listValues, (err,results)=>{
+            if(err){
+              console.log(err);
+            }
+            req.session.save(function(err){
+                req.flash('success_msg', 'Paid Successfully!');
+                res.redirect('/adminPanel/offlinePayments');
+      
+            });
+          });      
+    
         });
-      });      
+      }else{
+        let checksql = `SELECT isDue FROM infos WHERE cid = "${results[0].cid}"`;
+        db.query(checksql,(err,checkers)=>{
 
+          let listbill = `UPDATE infos SET ? WHERE cid = "${results[0].cid}"`;
+          let listBillValues = {};
+          listBillValues['isDue'] = checkers[0].isDue + paymentDue;
+          listBillValues['dateExpiry'] = dateExpiry;
+          listBillValues['datepaid'] = mydate;
+          listBillValues['validity'] = duration;
+          listBillValues['speed'] = speed;
+          listBillValues['status'] = 3;
+          
+          db.query(listbill, listBillValues, (err,listbills)=>{
+            if(err){
+                console.log(err);
+              }
+              req.session.save(function(err){
+                  req.flash('success_msg', 'Billed Successfully!');
+                  res.redirect('/adminPanel/offlinePayments');
+        
+              });
+          });
+        });
+      }
     });
+    
+    // let all_payment = `INSERT INTO all_payment SET ?`;
+    // let all_values = {
+    //     Name : results[0].Name,
+    //     Address : results[0].Address,
+    //     Mobile : results[0].Mobile,
+    //     Stb : results[0].Stb,
+    //     Amount : totalAmount,
+    //     Mode : 'Offline',
+    //     isDue : paymentDue,
+    //     validity : duration,
+    //     speed : speed,
+    //     datePaid : paydate,
+    //     dateStart : mydate,
+    //     dateExpiry : dateExpiry
+    // };
+    // db.query(all_payment, all_values, (err,allpays)=>{
+
+    //   let listPay = `UPDATE infos SET ? WHERE cid = "${results[0].cid}"`;
+    //   let listValues = {};
+    //   for(var i =0; i<duration; i++){
+    //       listValues[month[mydate.getMonth() + i]] = amount/duration;
+    //   }
+    //   listValues['dateExpiry'] = dateExpiry;
+    //   listValues['datepaid'] = mydate;
+  
+    //   if(balance > 0){
+    //     listValues['status'] = 2;
+    //     listValues['balance'] = balance;
+    //   }else{
+    //     listValues['status'] = 1;
+    //     listValues['balance'] = 0;
+    //   }
+    //   if(paymentDue == 1 && balance == 0){
+    //     listValues['status'] = 0;
+    //   }
+    //   listValues['validity'] = duration;
+    //   listValues['speed'] = speed;
+    //   listValues['isDue'] = paymentDue;
+    //   listValues['lastAmountId'] = allpays.insertId;
+    //   db.query(listPay,listValues, (err,results)=>{
+    //     if(err){
+    //       console.log(err);
+    //     }
+    //     req.session.save(function(err){
+    //         req.flash('success_msg', 'Paid Successfully!');
+    //         res.redirect('/adminPanel/offlinePayments');
+  
+    //     });
+    //   });      
+
+    // });
 
 
 

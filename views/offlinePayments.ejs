@@ -50,6 +50,12 @@
           }else{
             pd.style.display = "inline";
           }
+          var bf =  document.getElementById('balanceFieldCol');
+          if(bf.style.visibility != "hidden"){
+            bf.style.visibility = "hidden";
+          }else{
+            bf.style.visibility = "visible";
+          }
       }
       
     </script>
@@ -246,7 +252,7 @@
                           </div> 
                         </div>
                       </div> -->
-                      <div class="row mb-3 align-items-center">
+                      <div class="row mb-3 align-items-center" id="balanceFieldCol">
                         <div class="form-check mb-3">
                           <div class="col">
 

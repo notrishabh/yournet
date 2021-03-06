@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Payment Due List</title>
+    <link rel="icon" href="/wicon.jpg" type="image/x-icon">
+
+    
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+    <link rel="stylesheet" href="/main.css">
+
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+<script>
+   function balanceFieldsdue(){
+      var bf =  document.getElementById('balanceFielddue');
+      if(bf.disabled){
+        bf.disabled = false;
+      }else{
+        bf.disabled = true;
+      }
+    }
+</script>
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>
+ 
+ <body id="page-top">
+   <div id="wrapper">
+        <!-- Sidebar -->
+          <%- include('../partials/sidebar', {
+            dashboard : '',
+            payments : '',
+            complaints : '',
+            history : '',
+            worker : '',
+            region : '',
+            brand : '',
+            offlinePayments : '',
+            offlineComplaints : '',
+            newStb : '',
+            unpaidList : '',
+            fullList : 'active'
+          }); %>
+
+          <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+      
+              <%- include('../partials/topbar', {heading: 'Payment Due List'}); %>
+
+              <!-- End of Topbar -->
+      
+              <!-- Begin Page Content -->
+              <div class="container-fluid">
+                <% include ../partials/messages %>
+                <p class="lead" style="color: red;"><%=success%></p>
+                <div class="container-fluid">
+                  <div class="row align-items-center">
+                    <div class="col-md-1">
+                      <div class="row align-items-center">
+                        <a href="/adminPanel/unpaidList" class="btn btn-primary mb-3 p-2"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-filter"></i> Filter
+                      </a>
+                    
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/adminPanel/unpaidList/all/paymentDuePage">Payment Due</a>
+                        <a class="dropdown-item" href="/adminPanel/unpaidList/all">All unpaid</a>
+                      </div>
+                    </div>
+                    <div class="col-md-4 offset-md-4">
+                      <div class="row align-items-center">
+                        <p class="lead mb-4 text-gray-800 mr-3">Unpaid records for this month</p>
+                        <a href="/adminPanel/unpaidList/all/download" class="btn btn-primary mb-3 p-2">Download <i class="fas fa-arrow-circle-down"></i></a>
+    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container-fluid mb-4" id="dueForm" style="display: none;">
+                    <div class="card shadow">
+                        <h5 class="card-header">Payment due Form</h5>
+                        <div class="card-body">
+      
+                          <form action="/adminPanel/unpaidList/all/due" method="POST">
+                            <input type="hidden" name='Stb' id='Stbdue'>
+                            <input type="hidden" name='bid' id='billId'>
+                            <div class="form-row mb-3">
+                              <div class="col">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="namedue" disabled>
+                              </div>
+                              <div class="col">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="addressdue" disabled>
+                              </div>
+                              <div class="col">
+                                <label for="mobile">Mobile</label>
+                                <input type="text" class="form-control" id="mobiledue" disabled>
+                              </div>
+                              <div class="col">
+                                <label for="stbDisp">User ID</label>
+                                <input type="text" class="form-control" id="stbDispdue" disabled>
+                              </div>
+                            </div>
+  
+                              <div class="form-row mb-3 align-items-center">
+                                <div class="col-md-3">
+                                  <label class="form-check-label" for="customField" >Total Amount</label>
+                                  <input type="number" class="form-control" name="exampleField" id="customFielddue"  required /> 
+                                </div> 
+                                <div class="col-md-3">
+                                  <label class="form-check-label" for="duration" >Validity</label>
+                                  <input type="text" class="form-control" name="duration" id="default_validitydue"  disabled /> 
+                                </div> 
+                                  <!-- <div class="col-md-3">
+                                    <label class="form-check-label" for="duration" >Validity</label>
+                                    <select class="form-control" name="duration" id="duration" required>
+                                        <option id="default_validitydue"></option>
+                                        <% for(var i=1; i<= 12 ; i++){%>
+                                          <option value="<%=i%>"><%=i%> Months</option>
+                                        <%}%>
+                                  </select>                        
+                                </div>   -->
+                                  <div class="col-md-3">
+                                    <label class="form-check-label" for="speed" >Speed</label>
+                                    <select class="form-control" name="speed" id="speed" required>
+                                          <option id="default_speeddue"></option>
+                                          <option value="25">25 Mbps</option>
+                                          <option value="50">50 Mbps</option>
+                                          <option value="75">75 Mbps</option>
+                                          <option value="100">100 Mbps</option>
+                                          <option value="150">150 Mbps</option>
+                              
+                                  </select>                        
+                                </div>  
+                                <div class="col-md-3">
+                                  <label class="form-check-label" for="paymentDatedue" >Payment Date</label>
+                                  <input type="date" name="paymentDate" max="3000-12-31" 
+                                         min="1000-01-01" class="form-control" id="paymentDatedue">
+                                </div>
+                                
+                              </div>
+                              
+                                                   
+                            <div class="row mb-3 align-items-center">
+                              <div class="form-check mb-3">
+                                <div class="col">
+  
+                                  <input class="form-check-input" type="checkbox" value="" id="customRadio" onclick=balanceFieldsdue()>
+                                  <label class="form-check-label" for="customRadio" >Balance</label>
+                                </div>
+                              </div>
+                                  <div class="col-3">
+                                    <input type="number" class="form-control" name="balanceField" id="balanceFielddue"  disabled required /> 
+                                  </div>
+                              
+                            </div>
+                
+                            
+                              <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Confirm paid</button>
+                            </div>
+                          </form>  
+                            </div>    
+                        </div>
+
+
+                          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Table View</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile</th>
+                      <th>User ID</th>
+                      <th>Amount</th>
+                      <th>Validity</th>
+                      <th>Speed</th>
+                      <th>Billing Date</th>
+                      <th>Expiry Date</th>
+                      <th>Pay</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile</th>
+                      <th>User ID</th>
+                      <th>Amount</th>
+                      <th>Validity</th>
+                      <th>Speed</th>
+                      <th>Billing Date</th>
+                      <th>Expiry Date</th>
+                      <th>Pay</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <% if(results.length){ 
+                      for(var i = 0;i < results.length;i++) { 
+                        var date = results[i].dateStart.toString().split("GMT");
+                        var dateExpiry = results[i].dateExpiry.toString().split("GMT");
+                        %>
+
+                        <tr>
+                          <td><%= i+1  %></td>
+                          <td><%= results[i].Name %></td>
+                          <td><%= results[i].Address %></td>
+                          <td><%= results[i].Mobile %></td>
+                          <td><%= results[i].Stb %></td>
+                          <td><%= results[i].Amount %></td>
+                          <td><%= results[i].validity %></td>
+                          <td><%= results[i].speed %></td>
+                          <td><%= date[0] %></td>
+                          <td><%= dateExpiry[0] %></td>
+                          <td>
+                               
+                            <button class="btn btn-success"
+                            onclick="document.getElementById('dueForm').style.display = 'block'; 
+                            document.getElementById('Stbdue').value = `<%=results[i].Stb%>`;
+                            document.getElementById('billId').value = `<%=results[i].id%>`;
+                            document.getElementById('namedue').value = `<%= results[i].Name %>`;
+                            document.getElementById('addressdue').value = `<%= results[i].Address %>`;
+                            document.getElementById('customFielddue').value = `<%= results[i].Amount %>`;
+                            document.getElementById('mobiledue').value = `<%= results[i].Mobile %>`;
+                            document.getElementById('default_validitydue').value = `<%= results[i].validity %> months`;
+                            document.getElementById('default_speeddue').value = `<%= results[i].speed %>`;
+                            document.getElementById('default_speeddue').innerHTML = `<%= results[i].speed %> Mbps`;
+                            document.getElementById('stbDispdue').value = `<%= results[i].Stb %>`;"
+                            ><i class="fas fa-check-double"></i></button>
+
+                        </td>
+                        </tr>
+
+                    <% } 
+                  }else{ %>
+                    <tr>
+                      <td colspan="3">No Payment Dues.</td>
+                    </tr>
+                  <% } %>
+                    
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+      
+                
+              </div>
+              <%- include('../partials/footer'); %>
+            </div>
+            </div>
+          </div>
+            
+      
+
+
+          <%- include('../partials/vendor'); %>
+
+            <!-- Page level plugins -->
+            <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="/scripts/datatables.js"></script>
+
+            <script>
+                  var date1 = new Date();
+                var paymentDatedue = document.getElementById("paymentDatedue");
+                paymentDatedue.valueAsDate = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+
+            </script>
+
+
+ </body>
+ 
+ </html>
