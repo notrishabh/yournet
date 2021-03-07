@@ -24,6 +24,9 @@ route.get('/', ensureAuthenticateds,(req,res)=>{
 });
 
 route.post('/add', ensureAuthenticateds, (req,res)=>{
+    if(req.body.devPrice === ''){
+        req.body.devPrice = 0;
+    }
     let sql = `INSERT INTO infos (region_id, brand_id, Name, Address, Mobile, Stb, devName, devPrice, sos) VALUES (${req.body.region}, ${req.body.brand}, "${req.body.name}", "${req.body.address}", "${req.body.mobile}", "${req.body.stb}", "${req.body.devName}", ${req.body.devPrice}, "${req.body.sos}")`;
     // let values = {
     //     region_id : req.body.region,
