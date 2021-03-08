@@ -111,9 +111,13 @@ route.get('/all/download', ensureAuthenticateds,(req,res)=>{
         { header: 'Address', key: 'Address', width: 30 },
         { header: 'User ID', key: 'Stb', width: 15},
         { header: 'Mobile', key: 'Mobile', width: 15 },
-        { header: 'Amount', key: 'Amount', width: 10 },
+        { header: 'Brand', key: 'brand_name', width: 10 },
+        { header: 'Speed', key: 'speed', width: 10 },
+        { header: 'Device', key: 'devName', width: 15 },
+        { header: 'Device Price', key: 'devPrice', width: 15 },
+        { header: 'Sold or Security', key: 'sos', width: 15 },
     ];
-    let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE suspended = 0`;
+    let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.brand_id, infos.devName, infos.devPrice, infos.sos, infos.speed, brand.id, brand.brand_name FROM infos,brand WHERE brand.id = infos.brand_id and suspended = 0`;
     db.query(sql, (err,results)=>{
         results.forEach((result)=>{
             var data = JSON.parse(JSON.stringify(result));
@@ -210,11 +214,16 @@ route.get('/:brand/download', ensureAuthenticateds,(req,res)=>{
     worksheet.columns = [
         { header: 'Name', key: 'Name', width: 32 },
         { header: 'Address', key: 'Address', width: 30 },
-        { header: 'Stb', key: 'Stb', width: 15},
+        { header: 'User ID', key: 'Stb', width: 15},
         { header: 'Mobile', key: 'Mobile', width: 15 },
-        { header: 'Amount', key: 'Amount', width: 10 },
+        { header: 'Brand', key: 'brand_name', width: 10 },
+        { header: 'Speed', key: 'speed', width: 10 },
+        { header: 'Device', key: 'devName', width: 15 },
+        { header: 'Device Price', key: 'devPrice', width: 15 },
+        { header: 'Sold or Security', key: 'sos', width: 15 },
     ];
-    let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE brand_id = "${brand}" AND suspended = 0`;
+    let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.brand_id, infos.devName, infos.devPrice, infos.sos, infos.speed, brand.id, brand.brand_name FROM infos,brand WHERE brand.id = infos.brand_id AND suspended = 0 AND brand_id = "${brand}"`;
+
     db.query(sql, (err,results)=>{
         results.forEach((result)=>{
             var data = JSON.parse(JSON.stringify(result));
@@ -424,11 +433,17 @@ route.get('/:brand/:region/download', ensureAuthenticateds,(req,res)=>{
     worksheet.columns = [
         { header: 'Name', key: 'Name', width: 32 },
         { header: 'Address', key: 'Address', width: 30 },
-        { header: 'Stb', key: 'Stb', width: 15},
+        { header: 'User ID', key: 'Stb', width: 15},
         { header: 'Mobile', key: 'Mobile', width: 15 },
-        { header: 'Amount', key: 'Amount', width: 10 },
+        { header: 'Brand', key: 'brand_name', width: 10 },
+        { header: 'Speed', key: 'speed', width: 10 },
+        { header: 'Device', key: 'devName', width: 15 },
+        { header: 'Device Price', key: 'devPrice', width: 15 },
+        { header: 'Sold or Security', key: 'sos', width: 15 },
+
     ];
-    let sql = `SELECT Name, Address, Mobile, Stb, ${monthName} AS Amount FROM infos WHERE brand_id = ${brand} AND region_id = "${region}" AND suspended = 0`;
+    let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.brand_id, infos.devName, infos.devPrice, infos.sos, infos.speed, brand.id, brand.brand_name FROM infos,brand WHERE brand.id = infos.brand_id AND suspended = 0 AND brand_id = "${brand}" AND region_id = "${region}"`;
+
     db.query(sql, (err,results)=>{
         results.forEach((result)=>{
             var data = JSON.parse(JSON.stringify(result));
