@@ -126,7 +126,7 @@ db.query(firstsql, (err,results)=>{
   var validity = results[0].validity;
   
   let sql = `DELETE FROM all_payment WHERE id = "${pid}"`;
-  db.query(sql, (err,results)=>{
+  db.query(sql, (err,paydel)=>{
     if(!err){
       req.session.save((err)=>{
         if(!err){
@@ -158,6 +158,12 @@ db.query(firstsql, (err,results)=>{
         db.query(infosql, values, (err,boi)=>{
         });
       });
+      if(results[0].bid != 0){
+        let billdelsql = `DELETE FROM billing WHERE id = "${results[0].bid}"`;
+        db.query(billdelsql, (err,billdel)=>{
+        });
+
+      }
   }else{
       req.flash('error_msg', 'ERROR');
       res.redirect("/adminPanel/payments/today");
@@ -204,7 +210,7 @@ route.post('/thismonth/delete', ensureAuthenticateds, (req,res)=>{
     var validity = results[0].validity;
     
     let sql = `DELETE FROM all_payment WHERE id = "${pid}"`;
-    db.query(sql, (err,results)=>{
+    db.query(sql, (err,paydel)=>{
       if(!err){
         req.session.save((err)=>{
           if(!err){
@@ -236,6 +242,12 @@ route.post('/thismonth/delete', ensureAuthenticateds, (req,res)=>{
           db.query(infosql, values, (err,boi)=>{
           });
         });
+        if(results[0].bid != 0){
+          let billdelsql = `DELETE FROM billing WHERE id = "${results[0].bid}"`;
+          db.query(billdelsql, (err,billdel)=>{
+          });
+  
+        }
     }else{
         req.flash('error_msg', 'ERROR');
         res.redirect("/adminPanel/payments/thismonth");

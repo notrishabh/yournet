@@ -68,8 +68,10 @@
                       <th>Mobile</th>
                       <th>User ID</th>
                       <th>Amount</th>
+                      <th>Billing Date</th>
+                      <th>Recieving Date</th>
+                      <th>Validity</th>
                       <th>Mode</th>
-                      <th>Payment Date</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -80,25 +82,30 @@
                       <th>Mobile</th>
                       <th>User ID</th>
                       <th>Amount</th>
-                      <th>Mode</th>
-                      <th>Payment Date</th>
+                      <th>Billing Date</th>
+                      <th>Recieving Date</th>
+                      <th>Validity</th>
+                      <th>Mode</th>           
                     </tr>
                   </tfoot>
                   <tbody>
                     <% if(results.length){ 
                       for(var i = 0;i < results.length;i++) { 
                         var date = results[i].datePaid.toString().split("00:00:00");
+                        var billingDate = results[i].dateStart.toString().split("00:00:00");
                         %>
 
                         <tr>
-                          <td><%= results[i].id  %></td>
+                          <td><%= i+1  %></td>
                           <td><%= results[i].Name %></td>
                           <td><%= results[i].Address %></td>
                           <td><%= results[i].Mobile %></td>
                           <td><%= results[i].Stb %></td>
                           <td><%= results[i].Amount %></td>
-                          <td><%= results[i].Mode %></td>
+                          <td><%= billingDate[0] %></td>
                           <td><%= date[0] %></td>
+                          <td><%= results[i].validity %></td>
+                          <td><%= results[i].Mode %></td>
                         </tr>
 
                     <% } 

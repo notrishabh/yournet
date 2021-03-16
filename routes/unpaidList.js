@@ -358,6 +358,7 @@ route.post('/all/pay',ensureAuthenticateds,(req,res)=>{
       if(paymentDue == 0){
         let all_payment = `INSERT INTO all_payment SET ?`;
         let all_values = {
+            bid : billers.insertId,
             Name : results[0].Name,
             Address : results[0].Address,
             Mobile : results[0].Mobile,
@@ -499,7 +500,9 @@ route.post('/all/due',ensureAuthenticateds,(req,res)=>{
     // var dateExpiry = vardate;
 
     // dateExpiry.setDate(dateExpiry.getDate() + (30 * duration));
-    
+    let billDetails = `SELECT * FROM billing WHERE id ="${req.body.bid}"`;
+    db.query(billDetails, (err,billDet)=>{
+
     let billsql = `UPDATE billing SET ? WHERE id ="${req.body.bid}"`
     let billvalues = {
       Amount : totalAmount,
@@ -508,9 +511,9 @@ route.post('/all/due',ensureAuthenticateds,(req,res)=>{
       datePaid : mydate,
     };
     db.query(billsql, billvalues, (err,billers)=>{
-      
       let all_payment = `INSERT into all_payment SET ?`;
       let all_values = {
+        bid : billDet[0].id,
         Name : results[0].Name,
         Address : results[0].Address,
         Mobile : results[0].Mobile,
@@ -565,6 +568,7 @@ route.post('/all/due',ensureAuthenticateds,(req,res)=>{
       });
 
     });
+  });
 
 
 
