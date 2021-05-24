@@ -56,18 +56,30 @@ route.get('/all/download', ensureAuthenticateds,(req,res)=>{
       { header: 'Mobile', key: 'Mobile', width: 15 },
       { header: 'Amount', key: 'Amount', width: 10 },
       { header: 'Validity', key: 'validity', width: 10 },
-      { header: 'Billing Date', key: 'datePaid', width: 15 },
-  ];
-  let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, infos.datePaid, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND suspended = 0 AND status = 0`;
+      { header: 'Billing Date', key: 'dateStart', width: 15 },
+      { header: 'Expiry Date', key: 'dateExpiry', width: 15 },
+    ];
+  // let sql = `SELECT infos.Name, infos.Address, infos.Mobile, infos.Stb, infos.lastAmountId, infos.validity, infos.datePaid, all_payment.Amount AS Amount FROM infos,all_payment WHERE all_payment.id = infos.lastAmountId AND suspended = 0 AND infos.isDue >= 0`;
+  let sql = `SELECT Name, Address, Mobile, Stb, Amount, validity, dateStart, dateExpiry  FROM billing WHERE isdue = 1`
   db.query(sql, (err,results)=>{
       results.forEach((result)=>{
-          result.datePaid = result.datePaid.toString().split("00:00:00")[0];
+          // result.dateStart = result.dateStart.toString().split("00:00:00")[0];
+          // result.dateExpiry = result.dateExpiry.toString().split("00:00:00")[0];
+          result.dateStart = new Date(result.dateStart);
+          result.dateStart = convertDate(result.dateStart);
+          result.dateExpiry = new Date(result.dateExpiry);
+          result.dateExpiry = convertDate(result.dateExpiry);
           var data = JSON.parse(JSON.stringify(result));
           worksheet.addRow(data);
       });
       sendWorkbookAll(workbook,res);
   })
 });
+function convertDate(d){
+  let month = parseInt(d.getMonth()) + 1;
+  let formatDate = d.getDate() + "/" + month + "/" + d.getFullYear();
+  return formatDate;
+}
 
 
 async function sendWorkbookAll(workbook, response) { 
